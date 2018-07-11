@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/assets/css/style.css" type="text/css" />
+  <title>SOV Mapping Tool</title>
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="/assets/js/occupancy.js"></script>
+  <!-- click handlers and http request, jquery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+
+</head>
+
+<body>
+  <div class="container">
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">SOV Mapping Tool</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <li>
+            <a href="/about">About</a>
+          </li>
+          <li class="active">
+            <a href="/occCodes">Occupancy Codes</a>
+          </li>
+          <li>
+              <a href="/bldgCodes">Building Codes</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <br>
+    <table style="width:100%">
+      <tr>
+        <th width="10%">Occ Type</th>
+        <th width="25%">Category</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>0</td>
+        <td>Unknown</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Permanent Dwelling (multi-family housing)</td>
+        <td>ATC 2 is intended to model the entire building including the exterior shell (e.g., roof cover and cladding) and the
+          interior structure (e.g, damage to drywall, flooring, cabinets, etc.). This occupancy type is applicable for modeling
+          the structural damage to an apartment building that is owned by a landlord who rents out individual units to tenants.
+          It is also applicable to modeling a content-only policy held by a tenant in such an apartment building.</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Temporary Lodging</td>
+        <td>
+          <ul>
+            <li>Hotels and lodging places</li>
+            <li>Residential care, such as:</li>
+            <li>College dormitories</li>
+            <li>Nursing homes</li>
+            <li>Retirement centers</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Retail Trade</td>
+        <td>
+          Retail stores and other retail trade
+        </td>
+      </tr>
+
+      <tr>
+        <td>6</td>
+        <td>Wholesale Trade</td>
+        <td>
+          <ul>
+            <li>Warehouses</li>
+            <li>Sales offices</li>
+            <li>Recreational related wholesale trade</li>
+            <li>Other wholesale trade</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td>7</td>
+        <td>Personal and Repair Services</td>
+        <td>
+          <ul>
+            <li>Laundry, cleaning and shoe repair</li>
+            <li>Funeral services and crematories</li>
+            <li>Photo studios and miscellaneous personal services</li>
+            <li>Electrical repair shops</li>
+            <li>Watch, clock, jewelry, furniture repair</li>
+            <li>Beauty and barber shops</li>
+            <li>Automotive rental and leasing</li>
+            <li>Automotive repair and services</li>
+            <li>Automotive parking and car wash</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td>8</td>
+        <td>Professional, Technical and Business Services</td>
+        <td>
+          <ul>
+            <li>Office buildings</li>
+            <li>Arrangement of passenger transportation</li>
+            <li>Banking</li>
+            <li>Credit agencies</li>
+            <li>Security and commodity brokers</li>
+            <li>Insurance carriers</li>
+            <li>Insurance agents and brokers</li>
+            <li>Real estate</li>
+            <li>Miscellaneous repair shops</li>
+            <li>Services to buildings</li>
+            <li>Personnel supply services</li>
+            <li>Computer and data processing services</li>
+            <li>Management and consulting services</li>
+            <li>Detective and protective services</li>
+            <li>Equipment rental and leasing</li>
+            <li>Photofinishing, commercial photography</li>
+            <li>Other business services</li>
+            <li>Advertising</li>
+            <li>Legal services</li>
+            <li>Engineering, architectural services</li>
+            <li>Accounting, auditing, and bookkeeping</li>
+            <li>Note: For universities and colleges, RMS recommends using ATC 54.</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td>9</td>
+        <td>Health Care Service</td>
+        <td>
+          <ul>
+            <li>Doctors’ and dentists’ offices</li>
+            <li>Clinics</li>
+            <li>Nursing and personal care</li>
+            <li>Other medical and health services</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td>10</td>
+        <td>Entertainment and Recreation</td>
+        <td>
+          <ul>
+            <li>Bars</li>
+            <li>Movie theaters</li>
+            <li>Dance halls, studios, and schools</li>
+            <li>Theaters</li>
+            <li>Bowling alleys and pool halls</li>
+            <li>Sports stadiums</li>
+            <li>Racing and track operation</li>
+            <li>Membership sports and recreation clubs</li>
+            <li>Amusement and recreation services</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td>11</td>
+        <td>Parking</td>
+        <td>
+          Parking garages
+        </td>
+      </tr>
+
+      <tr>
+        <td>12</td>
+        <td>Heavy Fabrication and Assembly</td>
+        <td>
+          <ul>
+            <li>Complete guided missiles</li>
+            <li>Ammunition, except for small arms</li>
+            <li>Tanks and tank components</li>
+            <li>Other ordnance and accessories</li>
+            <li>Logging camps and logging contractors</li>
+            <li>Sawmills and planing mills, general</li>
+            <li>Hardwood dimension and flooring mills</li>
+            <li>Special product sawmills</li>
+            <li>Veneer and plywood</li>
+            <li>Structural wood members</li>
+            <li>Prefabricated wood buildings</li>
+            <li>Wood preserving</li>
+            <li>Particleboard</li>
+            <li>Wood products</li>
+            <li>Pulp mills</li>
+            <li>Paper mills, except building paper</li>
+            <li>Paperboard mills</li>
+            <li>Building paper and board mills</li>
+            <li>Tires and inner tubes</li>
+            <li>Rubber and plastics footwear</li>
+            <li>Reclaimed rubber</li>
+            <li>Fabricated rubber products</li>
+            <li>Miscellaneous plastics products</li>
+            <li>Rubber and plastics hoses and belting</li>
+            <li>Metal cans, barrels, drums, pails</li>
+            <li>Heating and plumbing equipment</li>
+            <li>Metal tools</li>
+            <li>Steam engines and turbines</li>
+            <li>Farm machinery</li>
+            <li>Lawn and garden equipment</li>
+            <li>Construction and mining machinery</li>
+            <li>Elevators and moving stairways</li>
+            <li>Food products machinery</li>
+            <li>Industrial furnaces and ovens</li>
+            <li>Automatic merchandising machines</li>
+            <li>Commercial laundry equipment</li>
+            <li>Refrigeration and heating equipment</li>
+            <li>Transformers, switchgear, and switchboard apparatus</li>
+            <li>Household appliances</li>
+            <li>Storage batteries</li>
+            <li>Motor vehicles and equipment</li>
+            <li>Aircraft and parts</li>
+            <li>Ship and boat building and repairing</li>
+            <li>Railroad equipment</li>
+            <li>Motorcycles, bicycles, and parts</li>
+            <li>Travel trailers, campers, and mobile homes</li>
+          </ul>
+        </td>
+      </tr>
+
+
+      <tr>
+        <td>13</td>
+        <td>Light Fabrication and Assembly</td>
+        <td>
+          <ul>
+            <li>Small arms and ammunition</li>
+            <li>Broad and narrow fabrics, yarn, and thread mills</li>
+            <li>Miscellaneous textile goods and floor coverings</li>
+            <li>Apparel mills</li>
+            <li>Curtains and draperies and house furnishings</li>
+            <li>Automotive and apparel trimmings</li>
+            <li>Wood kitchen cabinets</li>
+            <li>Millwork</li>
+            <li>Wood pallets and skids</li>
+            <li>Household and office furniture and fixtures</li>
+            <li>Envelopes</li>
+            <li>Sanitary paper products</li>
+            <li>Stationery products and bags</li>
+            <li>Printing and publishing</li>
+            <li>Leather tanning and finishing</li>
+            <li>Footwear, luggage, and leather goods</li>
+            <li>Concrete, lime, gypsum, and abrasive products</li>
+            <li>Gaskets, packing and sealing devices</li>
+            <li>Calculating and accounting machines</li>
+            <li>Sales and balances</li>
+            <li>Typewriters and office machines</li>
+            <li>Instruments to measure electricity</li>
+            <li>Electric lighting fixtures and wiring devices</li>
+            <li>Radio, TV, and communications equipment</li>
+            <li>Engine electrical equipment</li>
+            <li>Engineering, medical, photographic instruments</li>
+            <li>Watches, clocks, and parts</li>
+            <li>Jewelry, silverware, musical instruments manufacturing</li>
+            <li>Lead pencils and art goods manufacturing</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td>14</td>
+        <td>Food and Drugs Processing</td>
+        <td>
+          <ul>
+            <li>Food manufacturing plants</li>
+            <li>Tobacco manufacturers</li>
+            <li>Wines, liquor, soda, coffee manufacturing plants</li>
+            <li>Cooking oils</li>
+            <li>Ice manufacturing</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td>15</td>
+        <td>Chemicals Processing</td>
+        <td>
+          <ul>
+            <li>Fertilizers and agricultural chemicals</li>
+            <li>Gum and food chemicals</li>
+            <li>Adhesives, sealants, explosives, printing ink</li>
+            <li>Plastics and rubber</li>
+            <li>Drugs</li>
+            <li>Soaps, detergents, polishes, sanitation goods</li>
+            <li>Paints and allied products</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td>16</td>
+        <td>Metal and Minerals Processing</td>
+        <td>
+          <ul>
+            <li>Paving mixtures and blocks, asphalt</li>
+            <li>Glass containers and products</li>
+            <li>Cement, brick, clay products</li>
+            <li>Vitreous plumbing fixtures and china utensils</li>
+            <li>Porcelain electric supplies</li>
+            <li>Pottery products</li>
+            <li>Asbestos products</li>
+            <li>Minerals</li>
+            <li>Iron and steel manufacturing</li>
+            <li>Nonferrous metals manufacturing</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td>17</td>
+        <td>High Technology</td>
+        <td>
+          <ul>
+            <li>Electronic computing equipment</li>
+            <li>Electronic components and semiconductors</li>
+            <li>X-ray apparatus and tubes</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td>18</td>
+        <td>Construction</td>
+        <td>
+          Storage and maintenance facilities of a construction company.
+        </td>
+      </tr>
+
+      <tr>
+        <td>19</td>
+        <td>Petroleum</td>
+        <td>
+          <ul>
+            <li>Petroleum refining and coal products</li>
+            <li>Lubricating oils and greases</li>
+            <li>Pipe lines, except natural gas</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td>20</td>
+        <td>Agriculture</td>
+        <td>
+          <ul>
+            <li>Livestock, dairy farm products, eggs</li>
+            <li>Cotton, grains, tobacco, fruits, nuts, vegetables</li>
+            <li>Sugar crops and oil bearing crops</li>
+            <li>Forest and nursery products</li>
+            <li>Forestry products</li>
+            <li>Commercial fishing</li>
+            <li>Agricultural, forestry, and fishery services</li>
+            <li>Landscape and horticultural services</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td>21</td>
+        <td>Mining</td>
+        <td>
+          <ul>
+            <li>Iron, ferroalloy ores, and nonferrous metal ores mining</li>
+            <li>Coal mining</li>
+            <li>Offshore drilling towers</li>
+            <li>Crude petroleum and natural gas</li>
+            <li>Stone and clay mining and quarrying</li>
+            <li>Chemical and fertilizer mineral mining</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td>22</td>
+        <td>Religion and Nonprofit</td>
+        <td>
+          <ul>
+            <li>Business, labor, and civic organizations</li>
+            <li>Religious organizations</li>
+            <li>Membership organizations</li>
+            <li>Social services</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td>23</td>
+        <td>General Services</td>
+        <td>
+          <ul>
+            <li>Social services</li>
+            <li>U.S. postal service</li>
+            <li>Federal, state, and local electric utilities</li>
+            <li>Local government passenger transit</li>
+            <li>Other federal, state, and local government enterprises</li>
+            <li>Government industry</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td>24</td>
+        <td>Emergency Response Services</td>
+        <td>Other federal, state, and local government enterprises</td>
+      </tr>
+
+      <tr>
+        <td>25</td>
+        <td>Education</td>
+        <td>
+          <ul>
+            <li>Elementary and secondary schools</li>
+            <li>Day-care centers, nursery schools</li>
+            <li>Other educational services (see note below for exceptions)</li>
+            <li>Note: For universities and colleges, RMS recommends using ATC 54.</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td>26</td>
+        <td>Highway</td>
+        <td>
+          <ul>
+            <li>Local, inter-urban passenger transit</li>
+            <li>Motor freight transport and warehousing</li>
+            <li>Freight forwarders and other transportation services</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td>27</td>
+        <td>Railroad</td>
+        <td>Railroads and related services</td>
+      </tr>
+
+      <tr>
+        <td>28</td>
+        <td>Air</td>
+        <td>
+          <ul>
+            <li>Air transportation</li>
+            <li>Airport</li>
+            <li>Freight forwarders and other transportation services</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td>29</td>
+        <td>Sea/Water</td>
+        <td>
+          <ul>
+            <li>Water transportation</li>
+            <li>Port Authority</li>
+            <li>Freight forwarders and other transportation services</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td>30</td>
+        <td>Electrical</td>
+        <td>Electrical services</td>
+      </tr>
+
+      <tr>
+        <td>31</td>
+        <td>Water</td>
+        <td>
+          <ul>
+            <li>Water supply</li>
+            <li>Pumping stations</li>
+            <li>Storage facilities, tanks</li>
+            <li>Purification plants</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td>32</td>
+        <td>Sanitary Sewer</td>
+        <td>
+          <ul>
+            <li>Sewerage systems</li>
+            <li>Sanitary services, steam and irrigation systems</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td>33</td>
+        <td>Natural Gas</td>
+        <td>Gas production and distribution</td>
+      </tr>
+
+      <tr>
+        <td>34</td>
+        <td>Telephone and Telegraph</td>
+        <td>Communications, except radio and TV</td>
+      </tr>
+
+      <tr>
+        <td>35</td>
+        <td>Communication (Radio and TV)</td>
+        <td>Radio and TV broadcasting</td>
+      </tr>
+      <tr>
+        <td>36</td>
+        <td>Flood Control</td>
+        <td>
+          <ul>
+            <li>Electrical services and utilities</li>
+            <li>Water supply and sewerage systems</li>
+            <li>Other federal, state, and local government enterprises</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td>37</td>
+        <td>General Commercial</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>38</td>
+        <td>General Industrial</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>39</td>
+        <td>Miscellaneous</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>40</td>
+        <td>Mortgage-backed Dwelling (Puerto Rico only)</td>
+        <td>Caribbean Earthquake and Hurricane Models—ATC 40 represents residential structures covered by a Puerto Rico-specific
+          policy related to the mortgage loan process where the limit is the mortgage amount, which decreases each year as
+          the loan is paid off. Specifying ATC 40 in Puerto Rico will generate significantly lower loss estimates than specifying
+          single-family dwelling (ATC 1 or ATC 41). Only structure is insured, not contents and appurtenant structures. The
+          vulnerability curves reflect details specific to this policy, including average insurance-to-value conditions of
+          the mortgage loan process. This should not be used for typical Homeowner's policies (that is, Dwelling-Fire). See FAQ:
+          What Does The Occupancy Code ATC 40 Represent in RMS Models? for information about how ATC 40 is treated in Caribbean
+          territories other than Puerto Rico.</td>
+      </tr>
+      <tr>
+        <td>40</td>
+        <td>General Residential</td>
+        <td>Other Earthquake and Wind Models—In Mexico and Central America Hurricane Models, ATC 40 produces loss estimates that
+          are identical to those obtained by specifying multi-family dwelling (ATC 2). In Mexico and Central and South America
+          Earthquake Models other than Chile, ATC 40 is used to represent a general residential occupancy when the user does
+          not know if it is single-family or multi-family dwelling. See FAQ: What Does The Occupancy Code ATC 40 Represent
+          in RMS Models? for information about how ATC 40 is treated in other peril model regions, including Chile.</td>
+      </tr>
+      <tr>
+        <td>41</td>
+        <td>Homeowner</td>
+        <td>Typical residential structure covered by policy that covers structure, contents, and appurtenant structures. Residential
+          policies that are not tied to the mortgage process should use this occupancy. (Caribbean Hurricane model only)</td>
+      </tr>
+      <tr>
+        <td>42</td>
+        <td>Multi-Family Dwelling–Homeowners Association</td>
+        <td>ATC 42 is intended to model only damage to the exterior shell (e.g., roof cover and cladding), as is the case for
+          Homeowner Association policies. It can also be used to model losses to contents owned by the Homeowner Association
+          (e.g., furniture in common areas, pool equipment, etc.).</td>
+      </tr>
+      <tr>
+        <td>43</td>
+        <td>Multi-Family Dwelling–Condominium Unit Owner</td>
+        <td>ATC 43 is intended to model only damage to the interior structure (e.g., drywall, flooring, cabinets, etc.), as is
+          the case for Condo Unit Owner (HO6) policies. It can also be used to model losses to contents owned by the unit
+          owner.
+        </td>
+      </tr>
+      <tr>
+        <td>44</td>
+        <td>Gasoline Service Station</td>
+        <td>A gas station, which should include a gas station canopy as well as any small buildings on the premises.</td>
+      </tr>
+      <tr>
+        <td>47</td>
+        <td>Restaurants</td>
+        <td>Restaurants tend to have a unique contents damageability once the envelop of the structure is breached in a wind
+          event. Restaurants tend to have a higher susceptibility to damage than other entertainment classes of risk.</td>
+      </tr>
+      <tr>
+        <td>48</td>
+        <td>Casinos</td>
+        <td>RMS received several claims datasets for losses to casinos along the Mississippi coast. In particular, casinos have
+          unique business interruption dependencies that require a special occupancy code.</td>
+      </tr>
+      <tr>
+        <td>49</td>
+        <td>Acute Care Services Hospitals</td>
+        <td>Hospital buildings that are used to provide acute care services. For other medical services facilities use ATC9.</td>
+      </tr>
+      <tr>
+        <td>50</td>
+        <td>OSHPD Acute Care Services Hospitals (California ONLY)</td>
+        <td>Hospital buildings in California that are used to provide acute care services and are built or evaluated according
+          to the Office of Statewide Health Planning and Development guidelines (OSHPD) guidelines.</td>
+      </tr>
+      <tr>
+        <td>51</td>
+        <td>Hotels - Large</td>
+        <td>ATC 51 is intended to model time element losses of large and high-end hotels and luxury resorts. Structure and contents
+          vulnerability curves for this occupancy are the same as the ones in ATC 3.</td>
+      </tr>
+      <tr>
+        <td>52</td>
+        <td>Hotels - Small and Medium</td>
+        <td>ATC 52 is intended to model time element losses of small and medium size hotels and motels. Structure and contents
+          vulnerability curves for this occupancy are the same as the ones in ATC 3.</td>
+      </tr>
+      <tr>
+        <td>53</td>
+        <td>Rental - General Commercial</td>
+        <td>ATC 53 is intended to model loss of rental income of general commercial properties. Structure and contents vulnerability
+          curves for this occupancy are the same as the ones in ATC 37.</td>
+      </tr>
+      <tr>
+        <td>54</td>
+        <td>Universities and Colleges</td>
+        <td>Higher education structures do not tend to reflect the same type of damageability as elementary, intermediate, and
+          secondary schools. Their structure is similar to other commercial occupancies. Since higher education structures
+          are similar to other commercial occupancies, RMS recommends using ATC 54 for these structures rather than ATC 25,
+          which incorporates higher vulnerability functions for education occupancy.</td>
+      </tr>
+
+    </table>
+  </div>
+
+
+</body>
+
+</html>

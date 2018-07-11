@@ -1,0 +1,1876 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/assets/css/style.css" type="text/css" />
+  <title>SOV Mapping Tool</title>
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="/assets/js/occupancy.js"></script>
+  <!-- click handlers and http request, jquery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+
+</head>
+
+<body>
+  <div class="container">
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">SOV Mapping Tool</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <li>
+            <a href="/about">About</a>
+          </li>
+          <li>
+            <a href="/occCodes">Occupancy Codes</a>
+          </li>
+          <li class="active">
+              <a href="/bldgCodes">Building Codes</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <br>
+    <table style="width:100%">
+      <tr>
+        <th width="10%">Class</th>
+        <th width="10%">Scheme</th>
+        <th width="20%">Name</th>
+        <th>Description</th>
+        <th>
+      </tr>
+      <tr>
+        <td>0</td>
+        <td>RMS</td>
+        <td>Unknown</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>RMS</td>
+        <td>WOOD</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1A</td>
+        <td>RMS</td>
+        <td>Light Wood Frame</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1A1</td>
+        <td>RMS</td>
+        <td>Light Wood Stud Walls</td>
+        <td>Buildings with walls constructed of 2x4” or 2x6” wood studs spaced at 16” covered on the outside with plywood, lap
+          siding, or stucco and on the inside with gypsum board or lath and plaster. Floors are constructed of 2x8” - 2x12”
+          wood joists covered with plywood, and roofs are constructed of 2x6” joists covered by plywood or spaced boards
+          and shingles. Gravity loads are carried by the walls in shear and lateral earthquake forces are resisted by the
+          walls in shear. This is a very common form of residential construction throughout the U.S. Well constructed buildings
+          of this type are typically earthquake resistant because of the high lateral force strength that the wood stud walls
+          with plywood provides, and because the buildings are light weight.</td>
+      </tr>
+      <tr>
+        <td>1A2</td>
+        <td>RMS</td>
+        <td>Light Wood Post and Beam</td>
+        <td>Buildings having walls constructed of 4x4” or 6x6” wood posts, with similar size beams at the ceiling level spanning
+          the 6 to 12 foot spacing between the posts. This was the primary type of construction for one- to three-story buildings
+          in Japan through the mid 1900s, and to a limited extent are still being constructed. In these buildings, walls
+          were made of either lattice bamboo covered with mud (known as shinkabe) or wood lath with plaster (ohkabe). Many
+          severe earthquakes in Japan in the 20th century have demonstrated that these buildings, constructed prior to about
+          1980, are not earthquake resistant. Gravity loads are carried by the posts, and lateral earthquake forces are resisted
+          by the walls in shear. This type of construction is not common in the U.S.</td>
+      </tr>
+      <tr>
+        <td>1A3</td>
+        <td>RMS</td>
+        <td>Light Wood Stud Walls with Brick Masonry Veneer</td>
+        <td>Buildings in which the exterior façade consists of a Brick Masonry Veneer anchored with brick ties to a Light Wood
+          Stud Framework. The interior is finished with plasterboard. Gravity loads are carried by the stud walls in compression,
+          which are also braced with metal straps, wood, or structural plywood to support lateral loads. Increased weight
+          of the brick veneer and out-of-plane failures contribute to a decrease in seismic performance relative to 1A1.</td>
+      </tr>
+      <tr>
+        <td>1B</td>
+        <td>RMS</td>
+        <td>Heavy Timber</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1B1</td>
+        <td>RMS</td>
+        <td>Heavy Timber Frame</td>
+        <td>Buildings constructed with large vertical members (posts or columns), typically 8x8” or larger, that are capable
+          of supporting heavy industrial or warehouse loads and with large horizontal members that are capable of supporting
+          heavy loads over long spans. Gravity forces are carried by the posts or columns, and lateral earthquake forces
+          are typically resisted either by shear in walls or by knee-wall bracing (partial height diagonal bracing). Pole
+          construction, in which large poles are installed in holes drilled into the ground and extend to the desired one-,
+          two-, or three-story building height, is one form of heavy timber construction. In pole construction, lateral earthquake
+          resistance is established from the embedment of the pole into the ground.</td>
+      </tr>
+      <tr>
+        <td>1B2</td>
+        <td>RMS</td>
+        <td>Heavy Timber Frame with Unreinforced Masonry Infill</td>
+        <td>Buildings with large vertical and horizontal members, similar in size to those in Construction Class 1B1, but with
+          masonry infill providing the lateral earthquake force resistance. This type of construction is very popular in
+          the U.S. for schools, gymnasiums, and churches, in which the large beams and columns are commonly gluelam (thin,
+          approx. 1” boards, that are glued together to form a beam with a depth of about 24”).</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>RMS</td>
+        <td>Masonry</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2A</td>
+        <td>RMS</td>
+        <td>Weak Masonry</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2A1</td>
+        <td>RMS</td>
+        <td>Rubble Stone Masonry</td>
+        <td>Buildings having walls constructed using uncut stone masonry units, and likely using a weak mortar. Floors typically
+          have wood joists covered with boards. The roof is also made up with wood joists, and covered with a water shedding
+          material. Older buildings may have a heavy earthen material roof, while newer buildings of this type may have light
+          corrugated metal sheeting. Weak mortar is material that is not stable in water, as opposed to Portland Cement mortar
+          which is stable in water. Thus, while the stone masonry units will retain their strength over time, the strength
+          of the mortar will degrade over time. Gravity loads are carried by the walls in compression, and lateral earthquake
+          forces are resisted by the walls in shear. Although this type of construction is still being used throughout the
+          world, it has not been very common since the beginning of the 20th Century.</td>
+      </tr>
+      <tr>
+        <td>2A2</td>
+        <td>RMS</td>
+        <td>Adobe</td>
+        <td>Buildings having walls constructed of adobe masonry units and likely using a weak mortar. Floors are typically wood
+          joists covered with boards. The roof is also made up with wood joists, and covered with a water shedding material.
+          Older buildings may have a heavy earthen material roof, while newer buildings of this type are likely to have heavy
+          clay tile. Adobe unit masonry blocks are typically sun dried, therefore they are not stable in water. Thus, both
+          the adobe blocks and the mortar are subject to strength deterioration with time. Gravity loads are resisted by
+          the walls in compression, and lateral earthquake forces are resisted by the walls in shear. This type of construction
+          was very popular in the southwest U.S. and in many other countries throughout the world in the 19th century, but
+          it is presently found only rarely in the U.S. and in rural parts of Central and South America.</td>
+      </tr>
+      <tr>
+        <td>2A3</td>
+        <td>RMS</td>
+        <td>Reinforced Adobe</td>
+        <td>Adobe construction reinforced by steel mesh, steel bars or bamboos.</td>
+      </tr>
+      <tr>
+        <td>2B (NAHU only)</td>
+        <td>RMS</td>
+        <td>Unreinforced Masonry</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2B1</td>
+        <td>RMS</td>
+        <td>Unreinforced Cut Stone Masonry</td>
+        <td>Buildings having walls constructed of cut stone masonry units stacked together with mortar. Floors are typically
+          wood joists covered with boards. The roof is also made up with wood joists, and covered with a water shedding material.
+          Older buildings may have a heavy earthen material roof, while newer buildings of this type are likely to have heavy
+          clay tile. This type of construction was common for large institutional buildings in the 19th century and early
+          20th century, and usually has a large footprint. Gravity loads are carried by the walls in compression, and lateral
+          earthquake forces are resisted by the walls in shear. This type of construction is still used today throughout
+          the world, but mostly only for its esthetic value. The mortar in older buildings is likely to be weak (non-Portland
+          Cement type) while newer buildings are likely to be constructed using strong and durable Portland Cement mortar.</td>
+      </tr>
+      <tr>
+        <td>2B2</td>
+        <td>RMS</td>
+        <td>Unreinforced Solid Brick Masonry</td>
+        <td>Buildings having walls constructed of solid brick masonry units stacked together with mortar. Floors are typically
+          wood joists covered with boards or plywood sheeting. The roof is also made up with wood joists, and covered with
+          a water shedding material. Roof surface covering for this type of building includes a variety of materials such
+          as wood shingles, asbestos shingles, and clay tile. Gravity loads are carried by the walls in compression, and
+          lateral earthquake forces are resisted by the walls in shear. This is, and for several centuries has been, a very
+          common form of construction for all types of occupancies worldwide. Earthquake astute parts of the world, however,
+          have abandoned this type of construction. For example, unreinforced masonry construction has not been permitted
+          in California since about 1940.</td>
+      </tr>
+      <tr>
+        <td>2B3</td>
+        <td>RMS</td>
+        <td>Unreinforced Concrete Block Masonry</td>
+        <td>Buildings having the same characteristics as those for Construction Class 2B2 except that the masonry units are concrete
+          block. Because concrete block has been in use only since about the 1920s, buildings of this type are likely to
+          be newer than brick buildings. This is a very common form of construction in the U.S., and is also seen in many
+          countries throughout the world.</td>
+      </tr>
+      <tr>
+        <td>2B4</td>
+        <td>RMS</td>
+        <td>Unreinforced Brick Cavity Wall</td>
+        <td>Used only for modeling earthquake in Australia and New Zealand</td>
+      </tr>
+      <tr>
+        <td>2B7</td>
+        <td>RMS</td>
+        <td>Unreinforced Solid Brick Masonry – With Rigid Diaphragms</td>
+        <td>Similar to 2B2 except that the floor diaphragms are constructed using reinforced concrete.</td>
+      </tr>
+      <tr>
+        <td>2C (NAHU only)</td>
+        <td>RMS</td>
+        <td>Structural Masonry</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2C1</td>
+        <td>RMS</td>
+        <td>Reinforced Masonry</td>
+        <td>Buildings having walls constructed of masonry units stacked together with mortar, and include steel reinforcing.
+          A variety of masonry units are used for constructing buildings of this type such as solid brick, hollow clay tile,
+          concrete block and cut stone. Hollow masonry units are reinforced by inserting reinforcing steel in the cells and
+          then filling the cells with grout. Solid masonry units are reinforced by creating a sandwich having masonry units
+          on the outer and inner surface, with a reinforced concrete layer between them. Floors are typically wood joists
+          covered with boards or plywood sheeting. The roof is made up with wood joists, and covered with a water shedding
+          material. Roof surface coverings for this type of building include a variety of materials such as wood shingles,
+          asbestos shingles, and clay tile. Gravity loads are carried by the walls in compression, and lateral earthquake
+          forces are resisted by the walls in shear.</td>
+      </tr>
+      <tr>
+        <td>2C2</td>
+        <td>RMS</td>
+        <td>Confined Masonry</td>
+        <td>Buildings having walls constructed with a combination of grouted masonry units and reinforced concrete beams and
+          columns. In constructing confined masonry, masonry wall segments are erected first, and then reinforced concrete
+          columns and beams are cast around the wall segments, thus confining the walls. The walls may have staggered brick
+          ends that protrude into adjacent columns for better bonding. Confinement refers to the walls themselves, not their
+          reinforcement. This method of construction is distinctly different from reinforced concrete frame with unreinforced
+          masonry infill where the walls are constructed after the frame is built. Floors are constructed of either wood
+          or reinforced concrete, and the roof is typically wood joist covered with shingles or tile. Gravity loads are resisted
+          by the walls in compression and lateral earthquake forces are resisted by the walls in shear. This type of construction
+          is not used in the U.S. but is popular in many countries of the world, particularly in Latin America.</td>
+      </tr>
+      <tr>
+        <td>2C3</td>
+        <td>RMS</td>
+        <td>Confined Masonry with non-RC Slab</td>
+        <td>RMS2C3 in the Mexico Earthquake model is specifically designed for Confined Masonry with non-RC (such as wood or
+          masonry) slab.</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>RMS</td>
+        <td>Reinforced Concrete</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>3A</td>
+        <td>RMS</td>
+        <td>Cast-in-place Reinforced Concrete WITH CONCRETE ROOF DECK</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>3A1</td>
+        <td>RMS</td>
+        <td>Reinforced Concrete Moment Resisting Frame (RCMRF)</td>
+        <td>Buildings having reinforced concrete columns, beams, and floor and roof slabs. All of the components are cast-in-place.
+          Gravity loads are carried by the columns, and lateral earthquake forces are resisted by the rigid moment-resisting
+          frame that is created at the intersection of the beams and columns. This is a very popular form of construction
+          for all types of occupancies worldwide.</td>
+      </tr>
+      <tr>
+        <td>3A2</td>
+        <td>RMS</td>
+        <td>RCMRF with Shear Walls</td>
+        <td>Buildings having the same type of column, beam, floor slab and roof slab components as those described for Construction
+          Class 3A1, but include reinforced concrete shear walls. Gravity loads are carried by the columns (and perhaps the
+          shear walls), and lateral earthquake forces are resisted by both the rigid moment-resisting frame action created
+          at the beam-column joints and by the shear walls. This is sometimes referred to as a dual system because lateral
+          forces are resisted by both the frame and the shear walls.</td>
+      </tr>
+      <tr>
+        <td>3A3</td>
+        <td>RMS</td>
+        <td>RCMRF with Unreinforced Masonry Infill</td>
+        <td>Buildings having the same type of column, beam, floor slab and roof slab components as those described for Construction
+          Class 3A1, but include unreinforced masonry infill walls. Gravity loads are carried by the columns and lateral
+          earthquake forces are resisted by both the rigid moment-resisting frame action created at the beam-column joints.
+          The unreinforced masonry infill walls are included only for the purpose of enclosing space. This is a very common
+          form of construction worldwide.</td>
+      </tr>
+      <tr>
+        <td>3A4</td>
+        <td>RMS</td>
+        <td>Reinforced Concrete Shear Wall</td>
+        <td>Buildings constructed of reinforced concrete shear walls and floor and roof slabs. A pure shear wall building does
+          not require columns or beams for stability. However, shear wall buildings typically include columns, certainly
+          in the interior to carry gravity loads, and sometimes on the exterior as well. Gravity loads are carried by the
+          shear walls and columns, and lateral earthquake forces are resisted by the shear walls. This type of construction
+          is common throughout the world, and is very prevalent in Chile.</td>
+      </tr>
+      <tr>
+        <td>3A5</td>
+        <td>RMS</td>
+        <td>Waffle or Flat Slab</td>
+        <td>Buildings constructed with reinforced concrete columns and waffle slabs or flat slabs. The important distinction
+          for this type of building is that beams are not evident. From the underside of a waffle slab, they look exactly
+          like waffles. From the underside of a flat slab, they look simply flat. Gravity loads are carried by the columns,
+          and earthquake lateral forces are resisted by the rigid moment-resisting frame action created at the intersection
+          of the columns and slabs. Waffle slabs were very popular throughout the world in the mid 1900s, but their demonstrated
+          poor performance during earthquakes has diminished their use. Flat slabs have been common worldwide throughout
+          the 20th Century, but these are no longer used in earthquake astute parts of the world.</td>
+      </tr>
+      <tr>
+        <td>3A6</td>
+        <td>RMS</td>
+        <td>Steel and Reinforced Concrete (SRC) Composite Frame</td>
+        <td>Buildings constructed using a combination of steel shapes (I or Wide-Flange sections) that are encased in concrete
+          to form the composite column and beam elements of the frame. Gravity loads are carried by columns, and lateral
+          earthquake forces are resisted by the rigid-moment action of the frame. SRC buildings are popular in Japan, and
+          some buildings of this type have been constructed in other countries throughout the world.</td>
+      </tr>
+      <tr>
+        <td>3A7</td>
+        <td>RMS</td>
+        <td>Concrete Piloti</td>
+        <td>Buildings having reinforced concrete columns and beams with open space on the first floor (for shops or parking garages)
+          and infill walls on the upper stories. These buildings are also referred to as soft story buildings.</td>
+      </tr>
+      <tr>
+        <td>3A8</td>
+        <td>RMS</td>
+        <td>Concrete Filled Tube (CFT)</td>
+        <td>The primary construction material supporting the gravity and earthquake lateral loads are concrete filled tube frame
+          or reinforced concrete walls.</td>
+      </tr>
+      <tr>
+        <td>3A9</td>
+        <td>RMS</td>
+        <td>Gravity Load Designed RC with Unreinforced Masonry Infill</td>
+        <td>Buildings having reinforced concrete columns, beams, and floor and roof slabs. All of the components are cast-in-place.
+          Gravity loads are carried by the columns. The unreinforced masonry infill walls are included only for the purpose
+          of enclosing space and have minimal impact on lateral force resistance.</td>
+      </tr>
+      <tr>
+        <td>3A10</td>
+        <td>RMS</td>
+        <td>Reinforced Concrete Frame with Wood Frame in the Upper Floors</td>
+        <td>See ATC Construction Class 80.</td>
+      </tr>
+      <tr>
+        <td>3B</td>
+        <td>RMS</td>
+        <td>Precast Reinforced Concrete WITH CONCRETE ROOF DECK</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>3B1</td>
+        <td>RMS</td>
+        <td>Precast Moment Resisting Frame</td>
+        <td>Buildings having reinforced concrete frame components (beams and columns) that are casted and brought to the site
+          for assembly. Floor and roof elements are also typically made up from precast reinforced concrete components. In
+          constructing these buildings, the precast beam and column elements, with protruding reinforcing steel, are temporarily
+          braced in final position leaving about a one foot gap between the beam and column components. The reinforcing steel
+          protruding from the ends of the beams and columns are attached to adjacent beam and column components using either
+          welding or mechanical reinforcement connectors. Finally, the one foot gap between the beam and column components
+          is filled with concrete. The floor and roof elements are attached to the frame similarly. Gravity loads are resisted
+          by the columns, and lateral earthquake forces are resisted by the rigid moment action of the frame that is created.</td>
+      </tr>
+      <tr>
+        <td>3B2</td>
+        <td>RMS</td>
+        <td>Precast MRF with Shear Walls</td>
+        <td>Buildings having precast reinforced concrete beam and column components, and floor and roof elements, similar to
+          those described for Construction Class 3B1, but in addition include reinforced concrete shear walls. In this type
+          of building, gravity loads are carried by the columns (and perhaps by the walls) and lateral earthquake forces
+          are resisted by the shear walls.</td>
+      </tr>
+      <tr>
+        <td>3B3</td>
+        <td>RMS</td>
+        <td>Precast MRF with Unreinforced Masonry Infill</td>
+        <td>Buildings having precast reinforced concrete beam and column components, and floor and roof elements, similar to
+          those described for Construction Class 3B1, that include unreinforced masonry (URM) infill walls. In this type
+          of building, gravity loads are carried by the columns and lateral earthquake forces are resisted by the rigid moment
+          frame action of the frame created. The URM infill walls are included only for the purpose of creating space closures.</td>
+      </tr>
+      <tr>
+        <td>3B4(NAHU, SCS, WT only)</td>
+        <td>RMS</td>
+        <td>Tilt-up</td>
+        <td>Buildings having perimeter walls made of large single-height reinforced concrete panels that are tilted up into wall
+          position. The wall units are then anchored to the foundation and are inter connected. The floors and roof, typically
+          constructed of wood, are then connected to the perimeter walls. If the building has a large foot print, the building
+          may have intermediate columns between the walls to support interior gravity loads. Gravity loads are resisted by
+          the tilt-up walls and any intermediate columns. Lateral earthquake loads are resisted by the shear-wall action
+          of the tilt-up walls. The tilt-up wall panels can be casted at the site, but more commonly, they are casted at
+          a precasting plant. Tilt-up buildings are typically one story, but three story buildings of this type have been
+          constructed. Tilt-up buildings are most commonly used for industrial occupancies, but they are used throughout
+          the world for residential and commercial occupancies as well.</td>
+      </tr>
+      <tr>
+        <td>3B5</td>
+        <td>RMS</td>
+        <td>Precast Panel Bearing Wall</td>
+        <td>Buildings having walls made up from precast reinforced concrete panels that are typically one story high and 20 to
+          30 feet long. Floors and roof for these buildings are either precast or cast-in place reinforced concrete elements.
+          In constructing these buildings, the precast wall elements, with protruding reinforcing steel, are temporarily
+          braced in final position leaving about a one foot gap between the wall panels. The reinforcing steel protruding
+          from each of the four edges of the panel are attached to the adjacent wall element, to the foundation for bottom
+          panels, and/or to horizontal floor or roof elements using either welding or mechanical reinforcement connectors.
+          Finally, the one foot gap between the panels is filled with concrete. Gravity loads and lateral earthquake forces
+          are both carried by the monolithic walls created in this construction process. This type of construction has not
+          been used in the U.S., but it is very popular in Eastern Europe, and it has been used in Latin America.</td>
+      </tr>
+      <tr>
+        <td>3B6</td>
+        <td>RMS</td>
+        <td>Lift Slab</td>
+        <td>A method of concrete building construction in which the roof and floor slabs are cast, usually at ground level, and
+          then raised into position by jacking them up along the columns. Columns are usually made of steel and the slabs
+          are commonly prestressed. A central reinforced concrete core often braces the lifted structure and contains stairs
+          and elevators. Exterior walls can be made from any material and hung from the slabs and columns.</td>
+      </tr>
+      <tr>
+        <td>3C (NAHU, SCS, WT only)</td>
+        <td>RMS</td>
+        <td>Reinforced Concrete WITH WOOD OR METAL ROOF DECK</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>RMS</td>
+        <td>STEEL</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>4A</td>
+        <td>RMS</td>
+        <td>Steel Frame WITH CONCRETE ROOF DECK</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>4A1</td>
+        <td>RMS</td>
+        <td>Steel Moment Resisting Frame (MRF)</td>
+        <td>Buildings having steel columns and beams that make up a rigid moment-resisting frame system. Floor and roof diaphragms
+          are typically composed of metal decking with concrete fill or cast-in-place concrete slabs. Exterior walls can
+          be any of several types such as metal, precast concrete panel, or brick masonry. Gravity loads are carried by the
+          columns, and lateral earthquake forces are carried by the rigid moment-resisting frame action created at the beam-column
+          joints. This type of construction is somewhat common throughout the world, particularly for high-rise buildings.</td>
+      </tr>
+      <tr>
+        <td>4A2</td>
+        <td>RMS</td>
+        <td>Steel MRF with Shear Walls</td>
+        <td>Buildings having the same structural system characteristics as those described for Construction Class 4A1, but include
+          reinforced concrete shear walls. Gravity loads are carried by the columns (and perhaps the shear walls) and lateral
+          earthquake forces are resisted by both the shear walls and the moment-resisting frame. Although this type of construction
+          is used throughout the world, it is not very common.</td>
+      </tr>
+      <tr>
+        <td>4A3</td>
+        <td>RMS</td>
+        <td>Steel MRF with Unreinforced Masonry Infill</td>
+        <td>Buildings having the same structural system characteristics as those described for Construction Class 4A1, but include
+          unreinforced masonry infill walls. Gravity loads are carried by the columns and lateral earthquake forces are resisted
+          by the moment-resisting frame. This type of construction is somewhat common for low-rise steel buildings worldwide.</td>
+      </tr>
+      <tr>
+        <td>4A4</td>
+        <td>RMS</td>
+        <td>Concentrically Braced Steel Frame</td>
+        <td>Buildings having steel columns, beams, and concentric diagonal bracing. The concentric diagonal bracing typically
+          is installed, running from a lower beam-column joint to an upper diagonally opposed beam-column joint. Floor and
+          roof diaphragms are typically composed of metal decking with concrete fill or cast-in-place concrete slabs. Exterior
+          walls can be any of several types such as metal, precast concrete panel, or brick masonry. Gravity loads are carried
+          by the columns, and lateral earthquake forces are carried by the diagonal bracing. This type of construction is
+          common throughout the world for all occupancy types and for all building heights.</td>
+      </tr>
+      <tr>
+        <td>4A5</td>
+        <td>RMS</td>
+        <td>Eccentrically Braced Steel Frame</td>
+        <td>Buildings having the same structural system characteristics as those described for Construction Class 4A4, except
+          that the diagonal bracing is installed at a beam-column joint at one end with the other end attached to the beam
+          above eccentric (at some distance away) from the beam-column joint above. Gravity loads are carried by the columns
+          and lateral earthquake forces are resisted by the eccentric bracing. This type of construction was created for
+          its superior earthquake resistance qualities and has been implemented in construction in the U.S. and in a few
+          other countries throughout the world only since the early 1980s.</td>
+      </tr>
+      <tr>
+        <td>4A6</td>
+        <td>RMS</td>
+        <td>Gravity Load Designed Steel with Unreinforced Masonry Infill</td>
+        <td>Buildings having steel columns and beams that make up a frame system. Floor and roof diaphragms are typically composed
+          of metal decking with concrete fill or cast-in-place concrete slabs. Gravity loads are typically carried by the
+          columns. The unreinforced masonry infill walls are included only for the purpose of enclosing space and have minimal
+          impact on lateral force resistance.</td>
+      </tr>
+      <tr>
+        <td>4A7</td>
+        <td>RMS</td>
+        <td>Steel Frame with Wood Frame in the Upper Floors</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>4B</td>
+        <td>RMS</td>
+        <td>Light Metal</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>4B1</td>
+        <td>RMS</td>
+        <td>Light Metal Frame</td>
+        <td>Buildings that are constructed of light steel framing. These are typically long narrow one story buildings, having
+          no interior columns, that are pre-engineered and pre-fabricated and are assembled on, and attached to, a previously
+          constructed concrete slab/foundation. The framing consists of steel moment-resisting frames in the transverse (short)
+          building direction, with diagonal tie rods in the longitudinal (long) building direction. The exterior enclosure
+          for this type of building is typically either corrugated metal or asbestos sheeting that is attached to the vertical
+          light steel framing. The roof is typically either corrugated metal or fiberglass, which are light in weight. Gravity
+          loads are carried by the columns, and lateral earthquake forces are resisted by rigid moment-resisting frame action
+          in the transverse direction and by the diagonal tie-rods in the longitudinal direction. This type of construction
+          is common worldwide.</td>
+      </tr>
+      <tr>
+        <td>4B2</td>
+        <td>RMS</td>
+        <td>Light Metal Frame with Unreinforced Masonry Infill</td>
+        <td>Buildings having the same structural system characteristics as those described for Construction Class 4B1, except
+          that the exterior enclosure consists of unreinforced masonry infill walls. This type of building is also common
+          worldwide.</td>
+      </tr>
+      <tr>
+        <td>4C (NAHU North America SCS and WT)</td>
+        <td>RMS</td>
+        <td>Steel Frame WITH WOOD OR METAL ROOF DECK</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>RMS</td>
+        <td>Manufactured/Mobile Home</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>5A</td>
+        <td>RMS</td>
+        <td>Manufactured/Mobile Home without Tie-Downs</td>
+        <td>Buildings that are manufactured (completely assembled in a plant), and moved to the desired site. Once sited, utilities
+          are connected and the building is ready for use. In the mid 1900s, most mobile homes came with wheels, and the
+          wheels were removed when the home was permanently situated. Today most of these buildings come without wheels,
+          and the home is hauled to the desired site on a flatbed truck. These are commonly referred to as Manufactured buildings.
+          Mobile homes (or Manufactured homes) are very light and if they are not tied down, they are vulnerable to both
+          earthquake and windstorm lateral forces.</td>
+      </tr>
+      <tr>
+        <td>5B</td>
+        <td>RMS</td>
+        <td>Manufactured/Mobile Home with Tie-Downs</td>
+        <td>Buildings having the same basic characteristics as Construction Class 5A except that the buildings are anchored to
+          the ground. The tie-downs make these buildings earthquake and windstorm resistant.</td>
+      </tr>
+      <tr>
+        <td>6 (NAHU only)</td>
+        <td>RMS</td>
+        <td>Conventional Bridges (
+          <500 ft spans) with Multiple Simple Spans</td>
+            <td>Bridges constructed of concrete, steel, or timber having simple spans, that are each less than 500 ft in length.</td>
+      </tr>
+      <tr>
+        <td>7 (NAHU only)</td>
+        <td>RMS</td>
+        <td>Conventional Bridges (
+          <500 ft spans) with Continuous/Monolithic</td>
+            <td>Bridges constructed of concrete, steel, or timber having continuous spans that are each less than 500 ft in length.</td>
+      </tr>
+      <tr>
+        <td>8 (NAHU only)</td>
+        <td>RMS</td>
+        <td>Major Bridges (>500 ft spans)</td>
+        <td>Bridges constructed of steel or concrete having individual spans that are greater than 500 ft in length.</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>RMS</td>
+        <td>Underground Pipelines</td>
+        <td>Pipelines made of steel, concrete, tile, fiberglass, or any combination of materials that are located underground.</td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td>RMS</td>
+        <td>Pipelines at Grade</td>
+        <td>Pipelines made of steel, concrete, tile, fiberglass, or any combination of materials that are located at the ground
+          surface.</td>
+      </tr>
+      <tr>
+        <td>11</td>
+        <td>RMS</td>
+        <td>Concrete Dams</td>
+        <td>Dams that are constructed using reinforced concrete that is poured in place.</td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td>RMS</td>
+        <td>Earthfill and Rockfill Dams</td>
+        <td>Dams that are constructed using earth or rock material.</td>
+      </tr>
+      <tr>
+        <td>13 (NAHU only)</td>
+        <td>RMS</td>
+        <td>Alluvium Tunnels</td>
+        <td>Tunnels that are drilled through alluvial material, and are usually lined with concrete.</td>
+      </tr>
+      <tr>
+        <td>14 (NAHU only)</td>
+        <td>RMS</td>
+        <td>Rock Tunnels</td>
+        <td>Tunnels that are drilled through rock. Rock tunnels may or may not be lined, depending on the competency of the rock
+          encountered.</td>
+      </tr>
+      <tr>
+        <td>15 (NAHU only)</td>
+        <td>RMS</td>
+        <td>Cut and Cover Tunnels</td>
+        <td>Tunnels that are constructed by first opening a trench, then installing a tunnel liner (usually poured- in-place
+          reinforced concrete), and finally backfilling to cover the tunnel liner.</td>
+      </tr>
+      <tr>
+        <td>16</td>
+        <td>RMS</td>
+        <td>Underground Liquid Storage Tanks</td>
+        <td>Storage tanks constructed of concrete, steel, or fiberglass, that are located underground, and are designed to retain
+          liquids.</td>
+      </tr>
+      <tr>
+        <td>17</td>
+        <td>RMS</td>
+        <td>Underground Solid Storage Tanks</td>
+        <td>Storage tanks constructed of concrete, steel, or masonry, that are located underground, and are designed to retain
+          solid material.</td>
+      </tr>
+      <tr>
+        <td>18</td>
+        <td>RMS</td>
+        <td>On Ground Liquid Storage Tanks</td>
+        <td>Storage tanks constructed of concrete or steel, that are located at the ground surface, and are designed to retain
+          liquids.</td>
+      </tr>
+      <tr>
+        <td>19</td>
+        <td>RMS</td>
+        <td>On Ground Solid Storage Tanks</td>
+        <td>Storage tanks constructed of concrete, steel, or masonry, that are located at the ground surface, and are designed
+          to retain solid material.</td>
+      </tr>
+      <tr>
+        <td>20</td>
+        <td>RMS</td>
+        <td>Elevated Liquid Storage Tanks</td>
+        <td>Storage tanks that are constructed of steel, that are located above the ground surface, and are designed to retain
+          liquids.</td>
+      </tr>
+      <tr>
+        <td>21</td>
+        <td>RMS</td>
+        <td>Elevated Solid Storage Tanks</td>
+        <td>Storage tanks constructed of concrete, steel, or masonry tanks, that are located above the ground surface, and are
+          designed to retain solid material.</td>
+      </tr>
+      <tr>
+        <td>22 (NAHU only)</td>
+        <td>RMS</td>
+        <td>Railroad (Track and Bed)</td>
+        <td>Railroad (track and bed) of any type and used to carry commercial and/or government owned trains.</td>
+      </tr>
+      <tr>
+        <td>23 (NAHU only)</td>
+        <td>RMS</td>
+        <td>Highways</td>
+        <td>Highways constructed of concrete, asphalt, or gravel and used for urban streets, roads, highways, or freeways.</td>
+      </tr>
+      <tr>
+        <td>24 (NAHU only)</td>
+        <td>RMS</td>
+        <td>Runways</td>
+        <td>Airport runways constructed of concrete or asphalt and used for any and all private, commercial, or military aircraft.</td>
+      </tr>
+      <tr>
+        <td>25</td>
+        <td>RMS</td>
+        <td>High Industrial Masonry Chimneys</td>
+        <td>High chimneys (30 ft or taller) constructed of stone, brick, clay tile, or concrete block masonry units used for
+          exhausting fumes from combustion.</td>
+      </tr>
+      <tr>
+        <td>26</td>
+        <td>RMS</td>
+        <td>High Industrial Concrete Chimneys</td>
+        <td>High chimneys (30 ft or taller) constructed of reinforced concrete used for exhausting fumes from combustion.</td>
+      </tr>
+      <tr>
+        <td>27</td>
+        <td>RMS</td>
+        <td>High Industrial Steel Chimneys</td>
+        <td>High chimneys (30 ft or taller) constructed of steel used for exhausting fumes from combustion.</td>
+      </tr>
+      <tr>
+        <td>28</td>
+        <td>RMS</td>
+        <td>Cranes</td>
+        <td>Large stand-alone equipment designed to lift and move heavy items such as wharf cranes. These cranes can be either
+          fixed, or moveable.</td>
+      </tr>
+      <tr>
+        <td>29</td>
+        <td>RMS</td>
+        <td>Conveyor Systems</td>
+        <td>Large stationary equipment that is designed to move product or merchandise either on a belt or in an auger.</td>
+      </tr>
+      <tr>
+        <td>30</td>
+        <td>RMS</td>
+        <td>Conventional (
+          <100 ft) Electrical Transmission Line Towers</td>
+            <td>Steel, typically battered and braced frame, towers that are less than 100 ft tall, which support electrical transmission
+              lines.</td>
+      </tr>
+      <tr>
+        <td>31</td>
+        <td>RMS</td>
+        <td>Major (>100 ft) Electrical Transmission Line Towers</td>
+        <td>Steel, typically battered and braced frame, towers that are greater than 100 ft tall, which support electrical transmission
+          lines.</td>
+      </tr>
+      <tr>
+        <td>32</td>
+        <td>RMS</td>
+        <td>Broadcast Towers</td>
+        <td>Steel, typically guyed, towers that support radio, television, or cellular telephone transmitter equipment.</td>
+      </tr>
+      <tr>
+        <td>33</td>
+        <td>RMS</td>
+        <td>Observation Towers</td>
+        <td>Elevated towers that are designed for human occupancy such as observation towers and airport control towers.</td>
+      </tr>
+      <tr>
+        <td>34</td>
+        <td>RMS</td>
+        <td>Offshore Towers</td>
+        <td>Towers located offshore that are anchored to the sea floor. These are commonly used for oil drilling and recovery.</td>
+      </tr>
+      <tr>
+        <td>35</td>
+        <td>RMS</td>
+        <td>Canals</td>
+        <td>Concrete, masonry, or earth canals of any depth.</td>
+      </tr>
+      <tr>
+        <td>36</td>
+        <td>RMS</td>
+        <td>Earth Retaining Structures (>20 ft High)</td>
+        <td>Concrete or soil-anchor structures greater than 20 ft high that are designed to retain earth.</td>
+      </tr>
+      <tr>
+        <td>37</td>
+        <td>RMS</td>
+        <td>Waterfront Structures</td>
+        <td>Wharves or quay walls that facilitate the docking of boats or ships.</td>
+      </tr>
+      <tr>
+        <td>38</td>
+        <td>RMS</td>
+        <td>Residential Equipment</td>
+        <td>Residential furnishings such as furniture, large appliances, and small appliances.</td>
+      </tr>
+      <tr>
+        <td>39</td>
+        <td>RMS</td>
+        <td>Office Equipment</td>
+        <td>Office furnishings, such as furniture, file cabinets, bookshelves, typewriters, and computers.</td>
+      </tr>
+      <tr>
+        <td>40</td>
+        <td>RMS</td>
+        <td>Electrical Equipment</td>
+        <td>Electrical equipment, excluding high-technology electrical equipment, that is provided by a building occupant after
+          the building is constructed. Note, this does not include category one electrical equipment, which is included as
+          part of the design function of the building.</td>
+      </tr>
+      <tr>
+        <td>41</td>
+        <td>RMS</td>
+        <td>Mechanical Equipment</td>
+        <td>All mechanical equipment in a building except for high-technology equipment. This includes occupant provided equipment
+          and category one equipment that is included as part of the building.</td>
+      </tr>
+      <tr>
+        <td>42</td>
+        <td>RMS</td>
+        <td>High Technology Lab Equipment</td>
+        <td>Equipment that is especially sensitive to shaking.</td>
+      </tr>
+      <tr>
+        <td>43</td>
+        <td>RMS</td>
+        <td>Trains, Trucks, Airplanes</td>
+        <td>Any type of train, truck, or airplane.</td>
+      </tr>
+      <tr>
+        <td>44</td>
+        <td>RMS</td>
+        <td>Automobiles–Personal</td>
+        <td>Any type of automobile owned by a homeowner.</td>
+      </tr>
+      <tr>
+        <td>45</td>
+        <td>RMS</td>
+        <td>Automobiles–Dealers</td>
+        <td>Any type of automobile owned by a dealer.</td>
+      </tr>
+      <tr>
+        <td>46*</td>
+        <td>RMS</td>
+        <td>Petrochemical Facilities</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>46A*</td>
+        <td>RMS</td>
+        <td>Oil Refineries and Petrochemical Plants</td>
+        <td>The typical oil refinery is a complex facility with many different types of buildings, structures, and equipment.
+          Crude oil storage for the various products produced at the refinery can consist of unanchored vertical storage
+          tanks at ground level, horizontal pressurized storage tanks supported on steel or concrete plinths, and spherical
+          tanks supported on legs. Refineries also include a large number of steel stacks or columns anchored to concrete
+          foundations. Throughout the refinery there are extensive runs of piping with valves, meters, etc., both on ground
+          and elevated. Mechanical equipment throughout the refinery includes pumps, heat exchangers, furnaces, motors, and
+          generators. Electrical equipment includes wiring conduits, transformers, switchgear, and motor control centers.
+          Control rooms housing control equipment, timber cooling towers, refueling stations, administrative buildings, and
+          wharf loading facilities are also included in some refineries.</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>RMS</td>
+        <td></td>
+        <td>Oil refineries include Quality Control labs with SCADA (Supervisory Control and Data Acquisition) systems, which
+          require emergency backup power batteries.</td>
+      </tr>
+      <tr>
+        <td>46B*</td>
+        <td>RMS</td>
+        <td>Tank Farms</td>
+        <td>Most oil storage tanks are unanchored, cylindrical tanks with concrete footings at ground level. Older tanks have
+          both fixed and floating roofs, while modern tanks are almost exclusively floating-roofed. Diameters range from
+          approximately 40 feet to more than 250 feet. Tank height is nearly always less than the diameter. Construction
+          materials include welded, bolted, or riveted steel. Tank foundations may consist of sand or gravel, or a concrete
+          ring wall supporting the shell. Containment Retaining dikes surround the tanks.</td>
+      </tr>
+      <tr>
+        <td>46C*</td>
+        <td>RMS</td>
+        <td>Pumping Stations</td>
+        <td>Pumping stations have pumps, motors, pipe fittings, valves, meters, controls, electrical and mechanical equipment,
+          substations outside or within buildings. Pumps are laid in parallel to vary oil flow. SCADA are gas driven.</td>
+      </tr>
+      <tr>
+        <td>46D*</td>
+        <td>RMS</td>
+        <td>Pipelines</td>
+        <td>In general, transmission lines in the petroleum fuels system are located underground, except where they cross rivers
+          or gorges, or where they emerge for connection to compressor or pumping stations. They are virtually always welded
+          steel and operate at high pressures. Shut-off valves, which automatically function when line pressure drops below
+          a certain threshold pressure, are frequently included. Remote Controls and SCADA are an integral part of the pipelines.</td>
+      </tr>
+      <tr>
+        <td>47*</td>
+        <td>RMS</td>
+        <td>Electric Power Systems</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>47A*</td>
+        <td>RMS</td>
+        <td>Transmission/Distribution Substations</td>
+        <td>Transmission substations in the electrical system generally receive power at high voltages (220 kV or more) and step
+          it down to lower voltages for distribution. The substations generally consist of one or more control buildings,
+          steel towers, conductors, ground wires, underground cables, and extensive electrical equipment including banks
+          of circuit breakers, switches, wave traps, buses, capacitors, voltage regulators, and massive transformers. Circuit
+          breakers (oil or gas) protect transformers against power surges due to short circuits. Switches prevent long-term
+          interruption of the circuits. Wave traps enable transmission of supervisory signals through power lines. Buses
+          provide transmission linkage of the many and varied components within the substation. Capacitors are used to keep
+          the three phases of a transmission circuit in proper relation to each other. Transformers and voltage regulators
+          serve to maintain the predetermined voltage, or to step down or step up from one voltage to another. Porcelain
+          lightning arresters are used to protect the system from voltage spikes caused by lightning. Long, cantilevered
+          porcelain components (e.g., bushings and lightning arresters) are common on many electrical equipment items. SCADA,
+          controls, and emergency backup power batteries are also included with the substations.</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>RMS</td>
+        <td></td>
+        <td>Distribution substations in the electrical system generally receive power at low voltages (64 kV or less) and step
+          it down to lower voltages for distribution to users. The substations generally consist of one small control building,
+          steel towers, conductors, ground wires, and electrical equipment including circuit breakers, switches, wave traps,
+          buses, capacitors, voltage regulators, and transformers. Distribution substations are similar to the transmission
+          substations except they are of smaller scale.</td>
+      </tr>
+      <tr>
+        <td>47B*</td>
+        <td>RMS</td>
+        <td>Transmission/Distribution Lines</td>
+        <td>In general, transmission lines may be underground or above ground (supported on wood towers). Towers are usually
+          steel and carry several circuits at high voltages (64 kV or higher). Each circuit consists of three conductors,
+          one for each phase. Towers are provided with reinforced concrete footings and may be supported on piles. Most transmission
+          systems are ac, but some long-distance lines are dc. The dc systems require converter stations at each end of the
+          line.</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>RMS</td>
+        <td></td>
+        <td>Distribution lines may be underground or above ground supported by towers or poles. Towers are usually steel, and
+          poles are usually treated wood. Towers are provided with concrete footings, and poles may have footings or may
+          be embedded directly into the ground. Transformers on poles may be supported on platforms or anchored directly
+          to poles. Distribution lines typically operate at lower voltages (64 kV or less).</td>
+      </tr>
+      <tr>
+        <td>47C*</td>
+        <td>RMS</td>
+        <td>Fossil Fuel Plants</td>
+        <td>In general, fossil-fuel power plants can fueled by either coal, natural gas or oil. Coal handling equipment is associated
+          with coal fuels, liquid natural gas with natural gas fuels and crude oil tank farms with oil fuels.</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>RMS</td>
+        <td></td>
+        <td>Structures at fossil-fuel power plants are commonly medium-rise steel braced frames. A generation building typically
+          comprises turbine, boiler, and fan areas. The turbines and generators are typically supported on reinforced concrete
+          pedestals that are seismically isolated from the generation building. Water is heated to generate steam which drive
+          turbines connected to generators to generate electricity. Fossil fuel plants may have multiple generation units
+          depending on load variability and backup requirements.</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>RMS</td>
+        <td></td>
+        <td>Boiler feed pumps are usually located below the turbine-generators. The boiler area typically includes the boilers
+          (which are usually suspended from huge 10-12 story steel structures), steam drums, coal silos, conveyors, de-aerators,
+          heaters, and associated equipment and piping. The fan area houses the air preheaters as well as the forced-draft
+          fans and related duct work. Other components include instrumentation and control systems, water and fuel storage
+          tanks, stacks, cooling towers, both underground and above ground piping, cable trays, switchgear and motor control
+          centers, fuel handling and water treatment facilities, water intake and discharge, and cranes. Associated switchyards
+          step up voltage and include transformers, circuit breakers and switching substations. Fossil fuel plants also have SCADA.</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>RMS</td>
+        <td></td>
+        <td>Fossil fuel plants need a source of water for boilers and cooling. Boilers need clean water to avoid corrosion.</td>
+      </tr>
+      <tr>
+        <td>47D*</td>
+        <td>RMS</td>
+        <td>Cogeneration Plants</td>
+        <td>Same as above except that the generation plant receives the heat source as a by-product from another manufacturing
+          process, therefore the term “co-generation”.</td>
+      </tr>
+      <tr>
+        <td>47E*</td>
+        <td>RMS</td>
+        <td>Hydroelectric Plants</td>
+        <td>In general, hydroelectric power plants consist of a dam, diversion from a river and associated equipment including
+          water-driven turbines or generators, a control house and control equipment, and a substation with transformers
+          and other switching equipment. Hydroelectric plants can be either a part of a dam or a separate facility. It takes
+          advantage of water head to drive a turbine which turns a generator. Since electricity cannot be stored, generators
+          can usually be reversed to run as pumps to pump water uphill to store in a lake.</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>RMS</td>
+        <td></td>
+        <td>The dam may be earth fill, rock fill, or concrete and may include canals, penstocks, spillways, conduit, tunnels,
+          and intake structures. Gantry cranes are frequently located on top of the concrete dams. Equipment inside the dam
+          typically includes turbines, pumps, piping, switchgear, and emergency diesels.</td>
+      </tr>
+      <tr>
+        <td>48*</td>
+        <td>RMS</td>
+        <td>Natural Gas Facilities</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>48A*</td>
+        <td>RMS</td>
+        <td>Compressor Stations</td>
+        <td>Compressor stations pump compressed gas from field to storage facilities. They include a variety of electrical and
+          mechanical equipment, as well as structures and buildings. A typical plant yard may contain electrical equipment,
+          heat exchangers, horizontal gas-storage tanks on plinths, compressors, fans, air-operated valves, pumps, cooling
+          towers, steel stacks and columns, and piping. The control equipment is usually located in a control building, Cryogenic
+          systems may also exist on the site. Compressors are typically used to boost pressures in long distance transmission
+          lines. They also include SCADA.</td>
+      </tr>
+      <tr>
+        <td>48B*</td>
+        <td>RMS</td>
+        <td>Pipelines</td>
+        <td>In general, transmission lines in the natural gas system are located underground, except where they cross rivers
+          or gorges, or where they emerge for connection to compressor or pumping stations. They are virtually always welded
+          steel and operate at high pressures. Transmission pipelines range between 2 and 25 inches in diameter, but most
+          are larger than 12 inches. Shut-off valves, which automatically function when line pressure drops below a certain
+          threshold pressure, are frequently included. They also include SCADA.</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>RMS</td>
+        <td></td>
+        <td>Transmission lines have higher pressures, span longer distances and are generally less vulnerable than distribution
+          lines with lower pressures. The gas can be either imported via sea vessels in liquid form or manufactured from
+          coal or petroleum. LNG is pressurized around 1000 psi whereas it reaches homes at 4 psi.</td>
+      </tr>
+      <tr>
+        <td>48C*</td>
+        <td>RMS</td>
+        <td>Liquefied Natural Gas</td>
+        <td>To reduce transportation and storage requirements, natural gas is pressured into liquid form to be stored in tanks
+          or transported in high pressure pipelines and/or sea vessels.</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>RMS</td>
+        <td></td>
+        <td>There are no LNG in the U.S. as natural gas is transported through medium pressure pipelines from Wyoming. Japan
+          on the other hands relies heavily on LNG as it imports natural gas from Indonesia.</td>
+      </tr>
+      <tr>
+        <td>49*</td>
+        <td>RMS</td>
+        <td>Port/Harbor Facilities</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>49A*</td>
+        <td>RMS</td>
+        <td>Waterfront Facilities</td>
+        <td>A port (or harbor) is a facility where ships can take on or discharge cargo. Commercial harbors associated with the
+          transportation of cargo and people have five primary engineered components. The first component is the navigation
+          channel that has often been dredged to obtain proper depth. The second component is the pier or wharf (also referred
+          to as terminal or berth). where ships dock and freight or passengers facilities are actually transferred to or
+          from the ship. This portion of the harbor has high capital expenditure including specialized equipment to expedite
+          the cargo transfer process. Local storage facilities are the third component of a harbor. These facilities are
+          located on or adjacent to the pier and they provide temporary storage for incoming and outgoing cargo. The fourth
+          component of a harbor is the transportation systems, roadways, railroads, and pipelines, that link the harbor with
+          inland transportation systems. Finally, the harbor must interface with other lifelines, such as power, communication,
+          water, and sewage systems. This interface forms the fifth component of a harbor facility. Note: Damage to any of
+          these components, if severe enough, can render the harbor inoperable for transportation.</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>RMS</td>
+        <td></td>
+        <td>Other activities that can be found at harbor facilities include the processing of raw goods such as fish; shipbuilding
+          and repair; and preparation of goods, such as scrap metal, for shipment. Harbors often have tourist attractions
+          (restaurants and shops) along with marinas for pleasure craft. Although the tourist attractions and marinas are
+          not important in terms of the lifeline function, they do provide important sources of revenue for the harbor. Ships
+          for specialized activities, such as fire fighting, can also be found at harbor facilities.</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>RMS</td>
+        <td></td>
+        <td>Materials that are transported through harbors can be classed as general cargo, bulk goods, specialty items, and
+          passengers. General cargo is almost totally shipped by containers, that is, sealed boxes of various sizes. Bulk
+          goods include petroleum products, coal and ore, cement, and granular food stuffs. These goods are typically transported
+          in ships specifically designed for the particular bulk cargo. Specialty items such as automobiles, lumber and steel
+          require their own unique considerations and methods of handling.</td>
+      </tr>
+      <tr>
+        <td>49B*</td>
+        <td>RMS</td>
+        <td>Crane/Cargo Handling</td>
+        <td>In general, ports/cargo handling equipment comprise buildings (predominantly warehouse), waterfront structures, cargo
+          handling equipment, paved aprons, conveyors, scales, tanks, silos, pipelines, railroad terminals, and support services.
+          Building type varies, with steel frame being a common construction type. Waterfront structures include quay walls,
+          sheet-pile bulkheads, and pile-supported piers. Quay walls are essentially waterfront masonry or caisson walls
+          with earth fills behind them. Piers are commonly wood or batter piles to resist lateral transverse loads. Cargo
+          handling equipment for loading and unloading ships includes cranes for containers, bulk loaders for bulk goods,
+          and pumps for fuels. Warehouses became almost obsolete with the extensive use of containers. Additional handling
+          equipment is used for transporting goods throughout port areas.</td>
+      </tr>
+      <tr>
+        <td>49C*</td>
+        <td>RMS</td>
+        <td>Fuel Facilities</td>
+        <td>Similar to tank farms, except they are located at the harbor for oil transportation. These facilities include transfer
+          and handling equipment to and from tankers.</td>
+      </tr>
+      <tr>
+        <td>50*</td>
+        <td>RMS</td>
+        <td>Heavy Industrial Facilities</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>50A*</td>
+        <td>RMS</td>
+        <td>Pulp and Paper</td>
+        <td>Buildings associated with paper mills are typically large, high-bay, and long-span. These buildings are usually one
+          long high open bay, with an overhead gantry crane that runs the length of the building. Length-to-width ratios
+          are about three or more, and height-to-width ratios are about three-quarters to one. Construction materials for
+          paper mill buildings vary considerably. Steel frame with masonry infill walls, poured-in-place concrete frame with
+          concrete walls, and pre-cast concrete frame with precast concrete walls, or combinations of these, are common forms
+          of construction for paper mill buildings.</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>RMS</td>
+        <td></td>
+        <td>Equipment at paper mills can generally be regarded as being moderately heavy and massive, and can be broadly divided
+          into two processes, pulp making and paper making. Integrated paper mills include both, while other mills purchase
+          pulp from market suppliers. Equipment used in making pulp includes beaters, used for separating wood fibers, and/or
+          refiners, which brush out knots or clusters of fibers and cut fibers to uniform lengths. Paper-making equipment
+          typically includes separate sections/machines that are sequentially aligned to facilitate a continuous flow of
+          product, culminating in the desired final paper product. These are: 1) the wet end where pulp and water are mixed,
+          2) the press section where water is mechanically extruded from raw sheet material 3) the drier section where water
+          is further removed from the raw sheet material by heat, and 4) the calendar section where the paper product is
+          smoothed and finished to the desired finish or gloss. Overhead gantry cranes, used to service equipment and to
+          move product, are also an important piece of equipment at paper mills.</td>
+      </tr>
+      <tr>
+        <td>50B*</td>
+        <td>RMS</td>
+        <td>Steel Mill</td>
+        <td>Buildings at steel mills can vary in size and configuration, depending on which processes are included at the plant.
+          A complete plant includes iron making, steel making, and rolling facilities. Steel mill buildings, for making steel
+          and for rolling, are typically large, high-bay, and long span. These buildings are usually one long high open bay,
+          with an overhead gantry crane that runs the length of the building. Construction materials for steel mill buildings
+          vary considerably. Steel frame with masonry infill walls, poured-in-place concrete frame with concrete walls, and
+          pre-cast concrete frame with precast concrete walls, or combinations of these, are common forms of construction
+          for steel mill buildings.</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>RMS</td>
+        <td></td>
+        <td>Equipment at steel mills, which is typically ruggedly constructed to ensure operational reliability, also varies,
+          depending on the processes included at the plant. The primary equipment in connection with producing iron includes:
+          skip hoists and skip cars for transporting iron ore, coke, and limestone to the furnace; the furnace for heating
+          the iron ore, coke, and limestone; the stove for heating air; water plumbing and pumps for cooling the furnace,
+          air ducts and fans for moving hot air from the stove to the furnace; pig cars and rails for transporting pig iron
+          to the steel plant; slag cars and rails for removing slag from the furnace.</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>RMS</td>
+        <td></td>
+        <td>Equipment used in making steel includes: a blast furnace, which is typically electric in the U.S., for heating and
+          otherwise processing molten pig iron or scrap steel, overhead cranes for moving product to and from the furnaces,
+          and molds for making steel ingots. Note, some steel plants do not include the process of forming ingots, and form
+          billets, slabs, and blooms of steel directly from the blast furnace.</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>RMS</td>
+        <td></td>
+        <td>Equipment in the rolling portion of a steel mill includes large roller presses that shape ingots into billets, slabs,
+          or blooms and overhead cranes for transporting product.</td>
+      </tr>
+      <tr>
+        <td>50C*</td>
+        <td>RMS</td>
+        <td>Mining</td>
+        <td>Two types of mining are prevalent: 1) Opencut Mining, and 2) Underground Mining.</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>RMS</td>
+        <td></td>
+        <td>Buildings associated with either Opencut Mining or Underground Mining are similar, and typically include office buildings,
+          garages, and maintenance buildings. While these buildings are usually low-rise (1-3 story), they can be constructed
+          of a variety of materials—wood, light metal, masonry, steel, or concrete. Underground mining will usually include
+          a high-bay building that houses hoisting equipment.</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>RMS</td>
+        <td></td>
+        <td>Equipment differs dramatically between the two mining procedures. Equipment associated with Opencut Mining includes
+          large shovels or drag lines used for excavation, front loaders used for loading material on to trucks or rail cars,
+          and trucks or rail cars used for hauling material. For deep shaft mining, the hoist system for moving manpower
+          and material (ore) up and down and the air circulation system for conditioning the air in the mine shafts are equipment
+          that can be seen at the ground surface. Underground equipment in deep shaft mining typically includes drilling
+          equipment used for blasting, machines for loading ore onto skip cars, and skip cars for hauling ore to the hoist.
+          The drilling equipment used in deep shaft mining is typically small and hand held, but in some cases, large machines
+          are used.</td>
+      </tr>
+      <tr>
+        <td>50D*</td>
+        <td>RMS</td>
+        <td>Cement Mill</td>
+        <td>Buildings at cement mills are primarily office and laboratory space. As these buildings service only the cement mill,
+          they are typically low-rise (1-3 story), and can be constructed of any material—wood, masonry, concrete, or steel.</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>RMS</td>
+        <td></td>
+        <td>The largest piece of equipment found at cement mills is the rotary kiln, used for creating klinker—the basic constituent
+          of cement. Grinders, crushers, mixers, and conveyors are used in the stages of the cement-making process to reduce
+          the size of, move, and mix the raw products to the very fine texture of the final cement. A variety of storage
+          bins are used for storing raw product, product in process, and final cement at cement mills. These bins exist in
+          rectangular, tank, and silo configuration, and the storage includes both wet and dry product, depending on the
+          processing stage.</td>
+      </tr>
+      <tr>
+        <td>51*</td>
+        <td>RMS</td>
+        <td>Light Industrial Facilities</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>51A*</td>
+        <td>RMS</td>
+        <td>High Technology</td>
+        <td>High technology facilities generally include manufacturing plants that make or assemble computer associated products.
+          Buildings associated with high technology activities can be found constructed of a variety of types of materials
+          (wood, masonry, concrete, or steel). These buildings are generally low-rise (1-3 story), with manufacturing on
+          the lower level and offices in the upper level or levels, but mid-rise (4-7 story) buildings can also be found
+          that house high technology manufacturing operations. In California, tilt-up construction is commonly used, but
+          steel frame with metal lath stud walls is also common.</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>RMS</td>
+        <td></td>
+        <td>Equipment in high technology facilities varies substantially from one plant to another, depending on the product
+          being produced. The high end would include plants that produce silicon computer chips, and the low end includes
+          facilities that assemble precision electronic products, such as copiers and electronic switching equipment. Examples
+          of some of the high technology equipment at silicon chip making plants includes such items as an electrically heated
+          vacuum furnace with an argon atmosphere for growing large crystals, diamond saws used for slicing the crystals
+          into wafers, and computer-aided-design (CAD) systems used to create electronic circuits and for driving electron
+          beam machines that etch circuits onto silicon wafers. Because most of the silicon chip making process requires
+          a clean room environment, reliable functionality of the HVAC system is critical, and must be of high-technology
+          design and construction.</td>
+      </tr>
+      <tr>
+        <td>51B*</td>
+        <td>RMS</td>
+        <td>Telecommunication</td>
+        <td>Telecommunication generally includes facilities constructed and equipped to receive and send voice, video, and data
+          signals. The transmission medium can include metallic wire, fiber optic, or microwave. Buildings associated with
+          telecommunication activities tend to be mid-rise (4-7 story) in height, but low-rise (1-3 story) and high-rise
+          (8+ story) telecommunication buildings also exist. The most common construction materials used are concrete and
+          steel. Equipment in telecommunication facilities is predominately switching gear. A variety of types of switching
+          equipment is used, and these are typically mounted on banks of floor-to-ceiling racks that are installed in hundreds
+          or thousands of square feet of space in a building.</td>
+      </tr>
+      <tr>
+        <td>52 (Greece only)</td>
+        <td>RMS</td>
+        <td>MIXED</td>
+        <td>Buildings with old unreinforced masonry in the ground floor, overlaid by a reinforced concrete frame in the upper
+          floor. These buildings are 2 or 3-storeys high. The reinforced concrete frame is built over the old house with
+          foundations extending to the ground. Due to limitations in workmanship these buildings are generally more vulnerable
+          than reinforced concrete frame buildings of the same height.</td>
+      </tr>
+      <tr>
+        <td>52A (Hawaii only)</td>
+        <td>RMS</td>
+        <td>Wood Frame Single Wall</td>
+        <td>This class is specific to Hawaii, and consists of single-wall wood frame buildings. Typically, the wall consists
+          of load-bearing wall boards without studs. A wood bearing plate, attached to the walls, supports the roof rafter.
+          The roof itself is light frame with asphalt shingles or metal covering. The foundation is generally post and pier
+          or, in few cases, concrete masonry units or slab-on-grade.</td>
+      </tr>
+      <tr>
+        <td>52B Hawaii only</td>
+        <td>RMS</td>
+        <td>Wood Frame Double Wall</td>
+        <td>This class is specific to Hawaii, and consists of double-wall wood frame buildings with gravity and lateral loads
+          resisted using wood frame construction.</td>
+      </tr>
+      <tr>
+        <td>53</td>
+        <td>RMS</td>
+        <td>Golf Country Club</td>
+        <td>Golf course grounds and club house. If a country club is part of a larger resort, other buildings, such as hotels,
+          should be coded separately.</td>
+      </tr>
+      <tr>
+        <td>54</td>
+        <td>RMS</td>
+        <td>Boats, Inside a Building (Marina)</td>
+        <td>Personal watercraft that are located in a marina or warehouse.</td>
+      </tr>
+      <tr>
+        <td>55</td>
+        <td>RMS</td>
+        <td>Boats, Moored, Less than 26 ft., Motor</td>
+        <td>A secured motor boat less than 26 feet in length.</td>
+      </tr>
+      <tr>
+        <td>56</td>
+        <td>RMS</td>
+        <td>Boats, Moored, Less than 26 ft., Sail</td>
+        <td>A secured sailboat less than 26 feet in length.</td>
+      </tr>
+      <tr>
+        <td>57</td>
+        <td>RMS</td>
+        <td>Boats, Moored, 26-60 ft., Motor</td>
+        <td>A secured motor boat between 26 and 60 feet in length.</td>
+      </tr>
+      <tr>
+        <td>58</td>
+        <td>RMS</td>
+        <td>Boats, Moored, 26-60 ft., Sail</td>
+        <td>A secured sailboat between 26 and 60 feet in length.</td>
+      </tr>
+      <tr>
+        <td>59</td>
+        <td>RMS</td>
+        <td>Boats, Moored, Greater than 60 ft., Motor</td>
+        <td>A secured motor boat greater than 60 feet in length.</td>
+      </tr>
+      <tr>
+        <td>60</td>
+        <td>RMS</td>
+        <td>Boats, Moored, Greater than 60 ft., Sail</td>
+        <td>A secured sailboat greater than 60 feet in length.</td>
+      </tr>
+      <tr>
+        <td>61</td>
+        <td>RMS</td>
+        <td>Floating Structures</td>
+        <td>Permanently moored vessels that cannot be moved to a sheltered location when in the path of an approaching storm,
+          such as casino barges.</td>
+      </tr>
+      <tr>
+        <td>62</td>
+        <td>RMS</td>
+        <td>Response Control System – General</td>
+        <td>Buildings of mixed or unknown construction materials with structural systems containing integrated response control
+          systems such as base isolators or dampeners. These systems are designed to reduce the acceleration of the building
+          when it experiences ground shaking.</td>
+      </tr>
+      <tr>
+        <td>62A</td>
+        <td>RMS</td>
+        <td>Response Control System – Concrete</td>
+        <td>Buildings primarily of concrete construction with structural systems containing integrated response control systems
+          such as base isolators or dampeners. These systems are designed to reduce the acceleration of the building when
+          it experiences ground shaking.</td>
+      </tr>
+      <tr>
+        <td>62B</td>
+        <td>RMS</td>
+        <td>Response Control System – Steel</td>
+        <td>Buildings primarily of steel construction with structural systems containing integrated response control systems
+          such as base isolators or dampeners. These systems are designed to reduce the acceleration of the building when
+          it experiences ground shaking.</td>
+      </tr>
+      <tr>
+        <td>63 (NAHU only)</td>
+        <td>RMS</td>
+        <td>Aircraft, Small</td>
+        <td>Small private, commercial, or military planes with seating capacity 1-15 and a wingspan up to 20 meters. This includes
+          single-seaters, twin engines, bi-planes, and cargo planes with similar dimensions.</td>
+      </tr>
+      <tr>
+        <td>64 (NAHU only)</td>
+        <td>RMS</td>
+        <td>Aircraft, Medium</td>
+        <td>Light passenger jets with seating capacity 30-100 and wingspan between 20 and 35 meter. This includes cargo and military
+          planes with similar dimensions.</td>
+      </tr>
+      <tr>
+        <td>65 (NAHU only)</td>
+        <td>RMS</td>
+        <td>Aircraft, Large</td>
+        <td>Medium and jumbo passenger jets with seating capacity greater than 100 and wingspan greater than 35 meters. This
+          includes cargo and military planes with similar dimensions.</td>
+      </tr>
+      <tr>
+        <td>0</td>
+        <td>FIRE</td>
+        <td>Unknown</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>FIRE</td>
+        <td>Frame</td>
+        <td>Buildings having wood exterior walls or other combustible materials including construction where combustible materials
+          are combined with other materials such as brick veneer, stone veneer, iron cladding, or stucco on wood.</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>FIRE</td>
+        <td>Joisted Masonry</td>
+        <td>Buildings having masonry exterior walls, such as stone, adobe, brick, clay tile, concrete block, or concrete, with
+          combustible joisted wood floors and roof.</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>FIRE</td>
+        <td>Non-Combustible</td>
+        <td>Buildings having walls and floors constructed of, and supported by non-combustible materials such as metal, concrete,
+          asbestos, gypsum, or fire-proofed steel.</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>FIRE</td>
+        <td>Masonry Non-Combustible</td>
+        <td>Buildings having exterior walls constructed of unit masonry, such as stone, adobe, brick, clay tile, or concrete
+          block, with floors and roof of metal or other non-combustible material.</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>FIRE</td>
+        <td>Modified Fire Resistive</td>
+        <td>Buildings having exterior walls, floors, and roof constructed of masonry or other fire-resistive material with a
+          fire resistance rating of one hour or more, but less than two hours.</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>FIRE</td>
+        <td>Fire Resistive</td>
+        <td>Buildings having exterior walls, floors, and roof constructed of masonry or other fire-resistive material with a
+          fire resistance rating of not less than two hours.</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>FIRE</td>
+        <td>Heavy Timber Joisted Masonry</td>
+        <td>Joisted Masonry constructed buildings where the following additional conditions exist: where the entire roof has
+          a minimum thickness of 2 inches with roof supported by timber having a minimum dimension of 6 inches; or where
+          the entire roof assembly is documented to have a UL wind uplift classification of 90 or equivalent.</td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>FIRE</td>
+        <td>Superior Non-Combustible</td>
+        <td>Non-combustible constructed buildings where the following additional conditions exist: where the entire roof is constructed
+          of 2 inches of masonry on steel supports; or where the entire roof is constructed of 22 gauge metal (or heavier)
+          on steel supports; or where the entire roof assembly is documented to have a wind uplift classification of 90 or
+          equivalent.</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>FIRE</td>
+        <td>Superior Masonry Non-Combustible</td>
+        <td>Masonry non-combustible constructed buildings where the following additional conditions exist: where the entire roof
+          is constructed of 2 inches of masonry on steel supports; or where the entire roof is constructed of 22 gauge metal
+          (or heavier) on steel supports; or where the entire roof assembly is documented to have wind uplift classification
+          of 90 or equivalent.</td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td>FIRE</td>
+        <td>Conventional Bridges (
+          < 500 ft. spans) w/ Multiple Simple Spans</td>
+            <td>See RMS Construction Class 6</td>
+      </tr>
+      <tr>
+        <td>11</td>
+        <td>FIRE</td>
+        <td>Conventional Bridges (
+          < 500 ft. spans) w/ Monolithic Spans</td>
+            <td>See RMS Construction Class 7</td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td>FIRE</td>
+        <td>Major Bridges (> 500 ft. spans)</td>
+        <td>See RMS Construction Class 8</td>
+      </tr>
+      <tr>
+        <td>13</td>
+        <td>FIRE</td>
+        <td>Underground Pipelines</td>
+        <td>See RMS Construction Class 9</td>
+      </tr>
+      <tr>
+        <td>14</td>
+        <td>FIRE</td>
+        <td>Pipelines At Grade</td>
+        <td>See RMS Construction Class 10</td>
+      </tr>
+      <tr>
+        <td>15</td>
+        <td>FIRE</td>
+        <td>Concrete Dams</td>
+        <td>See RMS Construction Class 11</td>
+      </tr>
+      <tr>
+        <td>16</td>
+        <td>FIRE</td>
+        <td>Earthfill and Rockfill Dams</td>
+        <td>See RMS Construction Class 12</td>
+      </tr>
+      <tr>
+        <td>17</td>
+        <td>FIRE</td>
+        <td>Alluvium Tunnels</td>
+        <td>See RMS Construction Class 13</td>
+      </tr>
+      <tr>
+        <td>18</td>
+        <td>FIRE</td>
+        <td>Rock Tunnels</td>
+        <td>See RMS Construction Class 14</td>
+      </tr>
+      <tr>
+        <td>19</td>
+        <td>FIRE</td>
+        <td>Cut and Cover Tunnels</td>
+        <td>See RMS Construction Class 15</td>
+      </tr>
+      <tr>
+        <td>20</td>
+        <td>FIRE</td>
+        <td>Underground Liquid Storage Tanks</td>
+        <td>See RMS Construction Class 16</td>
+      </tr>
+      <tr>
+        <td>21</td>
+        <td>FIRE</td>
+        <td>Underground Solid Storage Tanks</td>
+        <td>See RMS Construction Class 17</td>
+      </tr>
+      <tr>
+        <td>22</td>
+        <td>FIRE</td>
+        <td>On Ground Liquid Storage Tanks</td>
+        <td>See RMS Construction Class 18</td>
+      </tr>
+      <tr>
+        <td>23</td>
+        <td>FIRE</td>
+        <td>On Ground Solid Storage Tanks</td>
+        <td>See RMS Construction Class 19</td>
+      </tr>
+      <tr>
+        <td>24</td>
+        <td>FIRE</td>
+        <td>Elevated Liquid Storage Tanks</td>
+        <td>See RMS Construction Class 20</td>
+      </tr>
+      <tr>
+        <td>25</td>
+        <td>FIRE</td>
+        <td>Elevated Solid Storage Tanks</td>
+        <td>See RMS Construction Class 21</td>
+      </tr>
+      <tr>
+        <td>26</td>
+        <td>FIRE</td>
+        <td>Railroads (Track and Bed)</td>
+        <td>See RMS Construction Class 22</td>
+      </tr>
+      <tr>
+        <td>27</td>
+        <td>FIRE</td>
+        <td>Highways</td>
+        <td>See RMS Construction Class 23</td>
+      </tr>
+      <tr>
+        <td>28</td>
+        <td>FIRE</td>
+        <td>Runways</td>
+        <td>See RMS Construction Class 24</td>
+      </tr>
+      <tr>
+        <td>29</td>
+        <td>FIRE</td>
+        <td>High Industrial Masonry Chimneys</td>
+        <td>See RMS Construction Class 25</td>
+      </tr>
+      <tr>
+        <td>30</td>
+        <td>FIRE</td>
+        <td>High Industrial Concrete Chimneys</td>
+        <td>See RMS Construction Class 26</td>
+      </tr>
+      <tr>
+        <td>31</td>
+        <td>FIRE</td>
+        <td>High Industrial Steel Chimneys</td>
+        <td>See RMS Construction Class 27</td>
+      </tr>
+      <tr>
+        <td>32</td>
+        <td>FIRE</td>
+        <td>Cranes</td>
+        <td>See RMS Construction Class 28</td>
+      </tr>
+      <tr>
+        <td>33</td>
+        <td>FIRE</td>
+        <td>Conveyor Systems</td>
+        <td>See RMS Construction Class 29</td>
+      </tr>
+      <tr>
+        <td>34</td>
+        <td>FIRE</td>
+        <td>Conventional (
+          < 100 ft.) Electrical Transmission Line Towers</td>
+            <td>See RMS Construction Class 30</td>
+      </tr>
+      <tr>
+        <td>35</td>
+        <td>FIRE</td>
+        <td>Major (> 100 ft.) Electrical Transmission Line Towers</td>
+        <td>See RMS Construction Class 31</td>
+      </tr>
+      <tr>
+        <td>36</td>
+        <td>FIRE</td>
+        <td>Broadcast Towers</td>
+        <td>See RMS Construction Class 32</td>
+      </tr>
+      <tr>
+        <td>37</td>
+        <td>FIRE</td>
+        <td>Observation Towers</td>
+        <td>See RMS Construction Class 33</td>
+      </tr>
+      <tr>
+        <td>38</td>
+        <td>FIRE</td>
+        <td>Offshore Towers</td>
+        <td>See RMS Construction Class 34</td>
+      </tr>
+      <tr>
+        <td>39</td>
+        <td>FIRE</td>
+        <td>Canals</td>
+        <td>See RMS Construction Class 35</td>
+      </tr>
+      <tr>
+        <td>40</td>
+        <td>FIRE</td>
+        <td>Earth Retaining Structures (> 20 ft. high)</td>
+        <td>See RMS Construction Class 36</td>
+      </tr>
+      <tr>
+        <td>41</td>
+        <td>FIRE</td>
+        <td>Waterfront Structures</td>
+        <td>See RMS Construction Class 37</td>
+      </tr>
+      <tr>
+        <td>42</td>
+        <td>FIRE</td>
+        <td>Residential Equipment</td>
+        <td>See RMS Construction Class 38</td>
+      </tr>
+      <tr>
+        <td>43</td>
+        <td>FIRE</td>
+        <td>Office Equipment</td>
+        <td>See RMS Construction Class 39</td>
+      </tr>
+      <tr>
+        <td>44</td>
+        <td>FIRE</td>
+        <td>Electrical Equipment</td>
+        <td>See RMS Construction Class 40</td>
+      </tr>
+      <tr>
+        <td>45</td>
+        <td>FIRE</td>
+        <td>Mechanical Equipment</td>
+        <td>See RMS Construction Class 41</td>
+      </tr>
+      <tr>
+        <td>46</td>
+        <td>FIRE</td>
+        <td>High Technology/Lab Equipment</td>
+        <td>See RMS Construction Class 42</td>
+      </tr>
+      <tr>
+        <td>47</td>
+        <td>FIRE</td>
+        <td>Trains, Trucks, Airplanes</td>
+        <td>See RMS Construction Class 43</td>
+      </tr>
+      <tr>
+        <td>48*</td>
+        <td>FIRE</td>
+        <td>Petrochemical Facilities</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>48A*</td>
+        <td>FIRE</td>
+        <td>Oil Refineries and Petrochemical Plants</td>
+        <td>See RMS Construction Class 46A*</td>
+      </tr>
+      <tr>
+        <td>48B*</td>
+        <td>FIRE</td>
+        <td>Tank Farms</td>
+        <td>See RMS Construction Class 46B*</td>
+      </tr>
+      <tr>
+        <td>48C*</td>
+        <td>FIRE</td>
+        <td>Pumping Stations</td>
+        <td>See RMS Construction Class 46C*</td>
+      </tr>
+      <tr>
+        <td>48D*</td>
+        <td>FIRE</td>
+        <td>Pipelines</td>
+        <td>See RMS Construction Class 46D*</td>
+      </tr>
+      <tr>
+        <td>49*</td>
+        <td>FIRE</td>
+        <td>Electric Power Systems</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>49A*</td>
+        <td>FIRE</td>
+        <td>Transmission/Distribution Substations</td>
+        <td>See RMS Construction Class 47A*</td>
+      </tr>
+      <tr>
+        <td>49B*</td>
+        <td>FIRE</td>
+        <td>Transmission/Distribution Lines</td>
+        <td>See RMS Construction Class 47B*</td>
+      </tr>
+      <tr>
+        <td>49C*</td>
+        <td>FIRE</td>
+        <td>Fossil Fuel Plants</td>
+        <td>See RMS Construction Class 47C*</td>
+      </tr>
+      <tr>
+        <td>49D*</td>
+        <td>FIRE</td>
+        <td>Cogeneration Plants</td>
+        <td>See RMS Construction Class 47D*</td>
+      </tr>
+      <tr>
+        <td>49E*</td>
+        <td>FIRE</td>
+        <td>Hydroelectric Plants</td>
+        <td>See RMS Construction Class 47E*</td>
+      </tr>
+      <tr>
+        <td>50*</td>
+        <td>FIRE</td>
+        <td>Natural Gas Facilities</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>50A*</td>
+        <td>FIRE</td>
+        <td>Compressor Stations</td>
+        <td>See RMS Construction Class 48A*</td>
+      </tr>
+      <tr>
+        <td>50B*</td>
+        <td>FIRE</td>
+        <td>Pipelines</td>
+        <td>See RMS Construction Class 48B*</td>
+      </tr>
+      <tr>
+        <td>50C*</td>
+        <td>FIRE</td>
+        <td>Liquefied Natural Gas</td>
+        <td>See RMS Construction Class 48C*</td>
+      </tr>
+      <tr>
+        <td>51*</td>
+        <td>FIRE</td>
+        <td>Port/Harbor Facilities</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>51A*</td>
+        <td>FIRE</td>
+        <td>Waterfront Facilities</td>
+        <td>See RMS Construction Class 49A*</td>
+      </tr>
+      <tr>
+        <td>51B*</td>
+        <td>FIRE</td>
+        <td>Crane/Cargo Handling</td>
+        <td>See RMS Construction Class 49B*</td>
+      </tr>
+      <tr>
+        <td>51C*</td>
+        <td>FIRE</td>
+        <td>Fuel Facilities</td>
+        <td>See RMS Construction Class 49C*</td>
+      </tr>
+      <tr>
+        <td>52*</td>
+        <td>FIRE</td>
+        <td>Heavy Industrial Facilities</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>52A*</td>
+        <td>FIRE</td>
+        <td>Pulp and Paper</td>
+        <td>See RMS Construction Class 50A*</td>
+      </tr>
+      <tr>
+        <td>52B*</td>
+        <td>FIRE</td>
+        <td>Steel Mill</td>
+        <td>See RMS Construction Class 50B*</td>
+      </tr>
+      <tr>
+        <td>52C*</td>
+        <td>FIRE</td>
+        <td>Mining</td>
+        <td>See RMS Construction Class 50C*</td>
+      </tr>
+      <tr>
+        <td>52D*</td>
+        <td>FIRE</td>
+        <td>Cement Mill</td>
+        <td>See RMS Construction Class 50D*</td>
+      </tr>
+      <tr>
+        <td>53*</td>
+        <td>FIRE</td>
+        <td>Light Industrial Facilities</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>53A*</td>
+        <td>FIRE</td>
+        <td>High Technology</td>
+        <td>See RMS Construction Class 51A*</td>
+      </tr>
+      <tr>
+        <td>53B*</td>
+        <td>FIRE</td>
+        <td>Telecommunication</td>
+        <td>See RMS Construction Class 51B*</td>
+      </tr>
+
+
+    </table>
+  </div>
+
+
+</body>
+
+</html>

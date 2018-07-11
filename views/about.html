@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/assets/css/style.css" type="text/css" />
+  <title>SOV Mapping Tool</title>
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="/assets/js/occupancy.js"></script>
+  <!-- click handlers and http request, jquery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+
+</head>
+
+<body>
+  <div class="container">
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">SOV Mapping Tool</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <li class="active">
+            <a href="/about">About</a>
+          </li>
+          <li>
+            <a href="/occCodes">Occupancy Codes</a>
+          </li>
+          <li>
+            <a href="/bldgCodes">Building Codes</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <br>
+    <div>
+      <h1>Schedule of Values (SOV) Primary Characteristics Mapping Tool</h1>
+        <h4>Project Scope:</h4>
+
+      <p>
+        Catastrophe modeling allows insurers and reinsurers, financial institutions, corporations, and public agencies to evaluate
+        and manage catastrophe risk from perils ranging from earthquakes and hurricanes to terrorism and pandemics. Most
+        re/insurers focus mainly on wind, earthquake, flood, and fire risk. To model risks, re/insurers use Risk Management
+        Solutions’ RiskLink and AIR’s Touchstone applications. Re/insurers use these applications in two ways: probabilistically,
+        to estimate the range or potential financial losses from catastrophes, and deterministically, to estimate losses
+        from historical or hypothetical events.
+      </p>
+      <br>
+
+      <h4> Basic Framework for the AIR and RMS Catastrophe Model Consist of Four Main Components:</h4>
+      <ul>
+        <li><strong>The Event Module</strong> incorporates data to generate thousands of stochastic, or representative, catastrophic events. Each
+          kind of catastrophe has a method for calculating potential damages taking into account history, geography, geology,
+          and, in cases such as terrorism, psychology.</li>
+        <li><strong>The Hazard Module</strong> determines the level of physical hazard the simulated events would cause to a specific geographical
+          area-at-risk, which affects the strength of the damage.</li>
+        <li><strong>The Vulnerability Module</strong> assesses the degree to which structures, their contents, and other insured properties are
+          likely to be damaged by the hazard. Because of the inherent uncertainty in how buildings respond to hazards, damage
+          is described as an average. The vulnerability module offers unique damage curves for different areas, accounting
+          for local architectural styles and building codes.</li>
+        <li><strong>The Financial Module</strong> translates the expected physical damage into monetary loss; it takes the damage to a building
+          and its contents and estimates who is responsible for paying. The results of that determination are then interpreted
+          by the model user and applied to business decisions.</li>
+      </ul>
+
+      <br>
+
+      <h4>Project Motivation:</h4>
+      <p>
+        The impetus for this project is to develop an application that would assist catastrophe modelers in scrubbing a schedule
+        of values obtained from an underwriter via a re/insurance brokerage firm. A schedule of values (SOV) contains locations
+        for a particular account and each locations characteristic, e.g., coverage values, construction type, number of stories,
+        year of construction, roof type, occupancy type, floor area, etc. The most important fields in a schedule of values
+        to scrub and code are the occupancy type, year of construction, number of stories, and construction type because
+        they have the most significant impact on the vulnerability module.
+      </p>
+
+      <br>
+
+      <h4>Methodology:</h4>
+      <p>
+        To produce functions that would be able to successfully map a particular occupancy description to an ATC occupancy code,
+        a construction or building description to an RMS or FIRE construction code, or a year of construction or a number
+        of stories from a schedule of values, I needed review how analyst had historically coded these descriptions and make
+        some intelligence decisions. I obtained a file from the catastrophe analysts, which contained an amalgamation of
+        many schedule of values and their respective occupancy, construction, year of construction, and number of stories
+        coding. The file contains approximately 22,466 records. I used these records to create mapping files or develop methodologies
+        for coding appropriate primary characteristics.
+      </p>
+
+      <br>
+
+      <h4>ATC Occupancy Code Mapping File Creation:</h4>
+      <ul>
+        <li>For each ATC occupancy code, I used an SQL cursor to loop through the file and create an array of all of the occupancy
+          descriptions which catastrophe-modeling analysts mapped them to that particular ATC occupancy code. This work was
+          done in MSSQL. I used npm package msnodesqlv8, to create the SQL connection I also used the replace function to
+          clean up any special characters.</li>
+        <li>After I had successfully obtained a table with the ATC occupancy code in one field, and an array of all the descriptions
+          analysts used to previously code a location that particular ATC occupancy code, I used a combination of node-rake,
+          regular expressions, and filter method to create my final ATC occupancy-mapping table.</li>
+        <li>The general idea was to create a more condensed array from these all of these descriptions. This would allow for
+          the more efficient mapping. The npm package node-rake was very helpful in this process. RAKE is defined as Rapid
+          Automatic Keyword Extraction. I used this package to extract the keywords from the descriptions. The regular expression
+          was used to extract address information or other irrelevant numerical expressions. I used filter to ensure that
+          we have distinct key words or key word pairs for mapping.</li>
+      </ul>
+
+      <br>
+
+      <h4>RMS and FIRE Construction Code Mapping File Creation:</h4>
+      <p>
+        The RMS and FIRE construction code mapping file processes was similar to the ATC occupancy mapping file creation. This file
+        did require a lot more manual manipulation as it was very messy.
+      </p>
+
+      <br>
+
+      <h4>Number of Stories:</h4>
+      <ul>
+        <li>Two regular expressions were created to handle coding of the number of stories: one to ignore all information in
+          parenthesis and one to extractt he max number in a given description </li>
+        <li>A comprehensive review of the descriptions of the number of stories and the number of stories mapping indicated catastrophe
+          modeling analysts rejected information in parenthesis and then selected the maximum value from a description of
+          building heights.</li>
+        <li>I also used prior knowledge to place some boundaries around the number of stories figures.</li>
+      </ul>
+
+      <br>
+
+      <h4>Year of Construction:</h4>
+      <ul>
+        <li>Two regular expressions were created to handle coding of the year of construction: one to ignore all information
+          in parenthesis and one to extract the max number in a given description</li>
+        <li>I also used prior knowledge about the modeling vendors to place some boundaries around the year of construction figures</li>
+      </ul>
+
+      <br>
+
+      <h4>Project Design:</h4>
+      <p>
+        Since the technology to post entire files to a site and have it sent to a server is beyond the scope of this project and
+        my current knowledge set, I chose to create a simple site that allows the user to turn a locations primary characteristics
+        description into an array, paste that array to my site, and then my site will process the descriptions and return
+        a list of those locations and their respective codes that will be appropriate to import into a catastrophe model.
+        The site is very simple, but information produced from the site is very useful and significantly improves on analyst
+        processing time. To choose the occupancy and construction codes, I use npm fuzzy-matching, which provides a “distance”
+        variable from zero to one (0-1) which analysts can use to determine the reliability of the occupancy or construction
+        code.
+      </p>
+
+      <br>
+
+      <h4>Technologies Used:</h4>
+      <ul>
+        <li>MySQL</li>
+        <li>MS SQL</li>
+        <li>Regular Expressions</li>
+        <li>Express</li>
+        <li>Fuzzy-matching</li>
+        <li>Node-rake</li>
+        <li>msnodesqlv8</li>
+        <li>Heroku</li>
+      </ul>
+
+      <br>
+
+      <h4>Input Structure:</h4>
+      <p>[[“Account Name”, “Location Number”, “Occupancy Description”, “Construction Description”, “Number Of Stories Description”,
+        “Year of Construction Description”] … [“Account Name”, “Location Number”,“Occupancy Description”, “Construction Description”,
+        “Number Of Stories Description”, “Year of Construction Description”]]</p>
+
+      <br>
+
+      <h4>Sample Array:</h4>
+      <p>[["Wall World","1","barber","wood frame","2 Floors, 1 Basement Shop","1640"],["Wall World","2","nursing home","reinforced
+        concrete","2 story; main has 3.5","1970, 1998, 2001, 2011"],["Wall World","3","warehouse","Precast tilt up slab in
+        ML","6","2003-2004"]]
+      </p>
+
+      <br>
+
+      <h4>Direction for Future Development:</h4>
+      <p>This project is a start. My intent is to create a solution which will further reduce the catastrophe modeling analysts
+        processing time. I, do however, realize the importance of human interaction with the schedule of values in making
+        informed decisions. Moving forward, I would like to created a comprehensive tool where a catastrophe modeling analyst
+        can spend a minimal amount of time massaging the schedule of values, import it into a tool, and then that tool will
+        process the file and produce an import file for specific to any model vendor. Also, I would to incorporate functionality
+        where the user can directly import the scrubbed file from my tool to the model vendor’s application.</p>
+
+      <br>
+
+      <h4>Sample SOV:</h4>
+      <img src="/assets/imgs/sampleSOV.jpeg" alt="Sample SOV Image" style="width:1040px;height:560px;border:1;">
+      <!-- <img src="/assets/imgs/sampleSOV.jpeg" alt="Sample SOV Image"> -->
+
+
+
+    </div>
+
+  </div>
+
+
+</body>
+
+</html>
