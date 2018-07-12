@@ -8,5 +8,13 @@
         "user":  "root",
         "password": "password",
         "database": "data_cleansing"
+    },
+    "heroku": {
+        "host":"g9fej9rujq0yt0cd.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+        "user": "zjhk8lm1rcvl6lx8",
+        "password":"v5x20znrffc7emo0",
+        "port": 3306,
+        "database": "b337c22w4rwk7epc"
+
     }
 }

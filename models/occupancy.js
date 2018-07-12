@@ -5,7 +5,7 @@ const config = require('config')
 
 const sqlQuery = "select occtype, occ_array_cleansed FROM occupancy";
 
-const sqlQueryBldg = "SELECT bldgscheme, bldgclass, bldgdesc FROM data_cleansing.construction;";
+const sqlQueryBldg = "SELECT bldgscheme, bldgclass, bldgdesc FROM construction;";
 
 //yearbuit function 
 var yearBuilt; 
