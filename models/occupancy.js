@@ -170,8 +170,9 @@ function search(locations, callback) {
                     
                     }
 
-                    distance = distance.toFixed(4);
-                    distBldg = distBldg.toFixed(4);
+                    // causes issues.  less polish UI but ServiceWorkerMessageEvent.
+                    // distance = distance.toFixed(4);
+                    // distBldg = distBldg.toFixed(4);
                     
                     rankedLocations.push({
                         accountNum,
