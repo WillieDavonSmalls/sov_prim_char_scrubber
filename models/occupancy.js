@@ -78,7 +78,14 @@ function getNumstories(numstories){
 
 function search(locations, callback) {
     //connection string
-    const connection = mysql.createConnection(config.mysql);
+    var connection;
+    
+    if (process.env.JAWSDB_URL){
+        connection = mysql.createConnection(process.env.JAWSDB_URL);
+    } else{
+        connection = mysql.createConnection(config.mysql);
+    }
+        
 
     // console.log(locations);
 
