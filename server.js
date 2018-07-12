@@ -6,6 +6,8 @@ const config = require('config');
 
 const app = express();
 
+var PORT = process.env.PORT || 3000;
+
 // Serve static content for the app from the "public" directory in the application directory.
 app.use(express.static("public"));
 
@@ -39,6 +41,10 @@ app.get("/about", function(req, res) {
   res.sendFile(path.join(__dirname, "./views/about.html"));
 });
 
-app.listen(config.app.port, function() {
-  console.log("App now listening at localhost: ", config.app.port);
+// app.listen(config.app.port, function() {
+//   console.log("App now listening at localhost: ", config.app.port);
+// });
+
+app.listen(PORT, function() {
+  console.log("App now listening at localhost: ", PORT);
 });
